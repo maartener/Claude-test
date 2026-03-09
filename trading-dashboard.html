@@ -337,9 +337,59 @@
       .right-col { grid-column:1/-1; }
     }
     @media(max-width:720px) {
-      main { grid-template-columns:1fr; }
-      .cd-box { font-size:2.1rem; min-width:66px; }
-      .hero { flex-direction:column; gap:18px; padding:18px; }
+      /* Layout */
+      main { grid-template-columns:1fr; padding:10px; gap:10px; min-height:unset; }
+
+      /* Header */
+      header { padding:10px 14px; flex-wrap:wrap; gap:8px; }
+      .logo-name { font-size:1rem; }
+      .logo-sub { display:none; }
+      .orcl-badge { width:36px; height:36px; font-size:.85rem; }
+      .header-pills { gap:5px; order:3; width:100%; }
+      .pill { font-size:.58rem; padding:3px 8px; }
+      .p-alert { display:none; }
+      .header-clock { font-size:.65rem; }
+
+      /* Hero */
+      .hero { flex-direction:column; gap:14px; padding:14px 16px; }
+      .hero-info { min-width:unset; width:100%; }
+      .cd-wrap { flex-wrap:wrap; justify-content:center; gap:6px; }
+      .cd-box { font-size:2rem; min-width:60px; padding:8px 10px; }
+      .cd-sep { font-size:2rem; margin-bottom:12px; }
+      .cd-right { max-width:100%; width:100%; }
+      .cd-prog-labels, .cd-pct-row { font-size:.6rem; }
+
+      /* Panels */
+      .panel { padding:14px; border-radius:10px; }
+
+      /* Price card */
+      .price-num { font-size:2rem; }
+      .price-card { padding:14px; }
+      .ohlc-v { font-size:.75rem; }
+
+      /* PnL */
+      .pnl-big { padding:14px; }
+      .pnl-v { font-size:1.5rem; }
+
+      /* Danger grid */
+      .dng-px { font-size:1rem; }
+
+      /* Estimate grid */
+      .est-grid { grid-template-columns:1fr 1fr; }
+
+      /* Notifications */
+      #notifs { right:10px; left:10px; max-width:unset; top:auto; bottom:80px; }
+
+      /* Tape */
+      .tape-track { font-size:.65rem; }
+    }
+
+    @media(max-width:400px) {
+      .cd-box { font-size:1.7rem; min-width:52px; padding:7px 8px; }
+      .cd-sep { font-size:1.7rem; }
+      .price-num { font-size:1.7rem; }
+      .pnl-v { font-size:1.3rem; }
+      .pill { font-size:.55rem; padding:3px 6px; }
     }
   </style>
 </head>
