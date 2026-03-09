@@ -775,6 +775,11 @@ function updateCountdown() {
 let price = ENTRY, priceH = ENTRY, priceL = ENTRY, iv = 32;
 const hist = [{t:Date.now(),p:price}];
 let callBreached = false, putBreached = false;
+/* candle state */
+let candles = [];
+let cOpen = price, cHigh = price, cLow = price, cClose = price, cT = Date.now();
+let candleTicks = 0;
+const TICKS_PER_CANDLE = 6;
 
 function simTick() {
   const now = Date.now();
@@ -786,6 +791,17 @@ function simTick() {
   if (price<priceL) priceL=price;
   hist.push({t:now,p:price});
   if (hist.length>250) hist.shift();
+  /* candle aggregation */
+  candleTicks++;
+  if (price > cHigh) cHigh = price;
+  if (price < cLow)  cLow  = price;
+  cClose = price;
+  if (candleTicks >= TICKS_PER_CANDLE) {
+    candles.push({t:cT, o:cOpen, h:cHigh, l:cLow, c:cClose});
+    if (candles.length > 60) candles.shift();
+    cOpen=price; cHigh=price; cLow=price; cClose=price; cT=now;
+    candleTicks=0;
+  }
 
   updateDisplay();
   updatePnL();
@@ -900,7 +916,7 @@ function updateThermo() {
   document.getElementById('thermoPriceTag').textContent = '$'+price.toFixed(2);
 }
 
-/* ── CHART ──────────────────────────────────────── */
+/* ── CHART (candlestick) ─────────────────────────── */
 function drawChart() {
   const canvas = document.getElementById('chartC');
   const W = canvas.offsetWidth, H = canvas.offsetHeight;
@@ -910,17 +926,27 @@ function drawChart() {
   ctx.scale(devicePixelRatio, devicePixelRatio);
   ctx.clearRect(0,0,W,H);
 
-  const PAD = {t:24,r:22,b:30,l:56};
+  const PAD = {t:24,r:22,b:42,l:56};
   const cW=W-PAD.l-PAD.r, cH=H-PAD.t-PAD.b;
-  const prices = hist.map(p=>p.p);
-  const mn = Math.min(...prices,PUT_T-6);
-  const mx = Math.max(...prices,CALL_T+6);
+
+  /* build display candles: finished candles + current forming candle */
+  const forming = {t:cT, o:cOpen, h:cHigh, l:cLow, c:price};
+  const allCandles = candles.length > 0
+    ? [...candles, forming]
+    : [forming];
+  const disp = allCandles.slice(-40);
+
+  const allP = disp.flatMap(c=>[c.h,c.l]);
+  const mn = Math.min(...allP, PUT_T-6);
+  const mx = Math.max(...allP, CALL_T+6);
   const rng = mx-mn||1;
 
-  const toX = i => PAD.l+(i/(hist.length-1))*cW;
   const toY = p => PAD.t+(1-(p-mn)/rng)*cH;
+  const slotW = cW / disp.length;
+  const barW = Math.max(slotW * 0.65, 2);
+  const toX = i => PAD.l + i * slotW + slotW/2;
 
-  // grid
+  /* grid */
   ctx.setLineDash([2,4]); ctx.lineWidth=1;
   for(let i=0;i<=5;i++){
     const y=PAD.t+(cH/5)*i, pv=mx-(rng/5)*i;
@@ -931,7 +957,7 @@ function drawChart() {
   }
   ctx.setLineDash([]);
 
-  // SAFE ZONE fill (between PUT and CALL target)
+  /* safe zone */
   const ySafe1 = toY(CALL_T), ySafe2 = toY(PUT_T);
   const safeGrad = ctx.createLinearGradient(0,ySafe1,0,ySafe2);
   safeGrad.addColorStop(0,'rgba(0,255,136,0)');
@@ -940,13 +966,13 @@ function drawChart() {
   ctx.fillStyle = safeGrad;
   ctx.fillRect(PAD.l, ySafe1, cW, ySafe2-ySafe1);
 
-  // DANGER zones (above CALL and below PUT)
+  /* danger zones */
   ctx.fillStyle='rgba(255,56,96,.07)';
   ctx.fillRect(PAD.l,PAD.t,cW,ySafe1-PAD.t);
   ctx.fillRect(PAD.l,ySafe2,cW,(PAD.t+cH)-ySafe2);
 
-  // Target / danger lines
-  [[CALL_T,'rgba(255,56,96,.6)','▲ GEVAAR $165.00'],[PUT_T,'rgba(255,56,96,.6)','▼ GEVAAR $133.00'],[ENTRY,'rgba(0,255,136,.5)','✓ MAX WINST $149']].forEach(([lv,col,lbl]) => {
+  /* reference lines */
+  [[CALL_T,'rgba(255,56,96,.6)','▲ GEVAAR $165'],[PUT_T,'rgba(255,56,96,.6)','▼ GEVAAR $133'],[ENTRY,'rgba(0,255,136,.5)','✓ MAX WINST $149']].forEach(([lv,col,lbl]) => {
     ctx.setLineDash([6,4]); ctx.lineWidth=1.5;
     ctx.beginPath(); ctx.moveTo(PAD.l,toY(lv)); ctx.lineTo(W-PAD.r,toY(lv));
     ctx.strokeStyle=col; ctx.stroke(); ctx.setLineDash([]);
@@ -954,30 +980,41 @@ function drawChart() {
     ctx.fillText(lbl, W-PAD.r-3, toY(lv)-4);
   });
 
-  if (hist.length<2) return;
+  /* candlesticks */
+  disp.forEach((c, i) => {
+    const x = toX(i);
+    const bull = c.c >= c.o;
+    const col  = bull ? '#00e676' : '#ff3860';
+    const bTop = toY(Math.max(c.o, c.c));
+    const bBot = toY(Math.min(c.o, c.c));
+    const bH   = Math.max(bBot - bTop, 1.5);
+    /* wick */
+    ctx.beginPath(); ctx.moveTo(x, toY(c.h)); ctx.lineTo(x, toY(c.l));
+    ctx.strokeStyle = col; ctx.lineWidth = 1.2; ctx.stroke();
+    /* body */
+    ctx.fillStyle   = bull ? 'rgba(0,230,118,.85)' : 'rgba(255,56,96,.85)';
+    ctx.strokeStyle = col;  ctx.lineWidth = 1;
+    ctx.fillRect(x - barW/2, bTop, barW, bH);
+    ctx.strokeRect(x - barW/2, bTop, barW, bH);
+  });
 
-  // Color price line based on zone
+  /* x-axis timestamps (HH:MM:SS in NL locale) */
+  ctx.fillStyle='rgba(200,214,229,.45)'; ctx.font='8px "Share Tech Mono"'; ctx.textAlign='center';
+  const every = Math.max(1, Math.floor(disp.length / 6));
+  disp.forEach((c, i) => {
+    if (i % every === 0 || i === disp.length-1) {
+      const d = new Date(c.t);
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mm = String(d.getMinutes()).padStart(2,'0');
+      const ss = String(d.getSeconds()).padStart(2,'0');
+      ctx.fillText(`${hh}:${mm}:${ss}`, toX(i), H - PAD.b + 16);
+    }
+  });
+
+  /* current price dot on last candle */
   const inSafe = price > PUT_T && price < CALL_T;
-  const lineColor = inSafe ? 'rgba(0,212,255,1)' : 'rgba(255,56,96,1)';
-  const lineGrad = ctx.createLinearGradient(0,0,0,H);
-  lineGrad.addColorStop(0, lineColor.replace('1)','1)'));
-  lineGrad.addColorStop(1, lineColor.replace('1)','.4)'));
-
-  ctx.beginPath();
-  hist.forEach((p,i) => { i===0?ctx.moveTo(toX(i),toY(p.p)):ctx.lineTo(toX(i),toY(p.p)); });
-  ctx.strokeStyle=lineGrad; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.stroke();
-
-  // area fill
-  const lx = toX(hist.length-1);
-  ctx.lineTo(lx,toY(ENTRY)); ctx.lineTo(PAD.l,toY(ENTRY)); ctx.closePath();
-  const ag = ctx.createLinearGradient(0,0,0,H);
-  ag.addColorStop(0,'rgba(0,212,255,.1)'); ag.addColorStop(1,'rgba(0,212,255,0)');
-  ctx.fillStyle=ag; ctx.fill();
-
-  // dot
-  const lp=hist[hist.length-1];
   const dotCol = inSafe ? '#00d4ff' : '#ff3860';
-  ctx.beginPath(); ctx.arc(toX(hist.length-1),toY(lp.p),5,0,Math.PI*2);
+  ctx.beginPath(); ctx.arc(toX(disp.length-1), toY(price), 5, 0, Math.PI*2);
   ctx.fillStyle=dotCol; ctx.shadowColor=dotCol; ctx.shadowBlur=14; ctx.fill(); ctx.shadowBlur=0;
 }
 
