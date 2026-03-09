@@ -428,7 +428,7 @@
   <div class="panel hero" style="grid-column:1/-1">
     <div class="hero-info">
       <div class="hero-badge">⚠ RISICO EVENT — Oracle Q3 FY2026</div>
-      <div class="hero-title">Earnings 10 Maart 2026<br/>22:00 Nederlandse Tijd</div>
+      <div class="hero-title">Earnings 10 Maart 2026<br/>21:00 Nederlandse Tijd</div>
       <div class="hero-date" id="heroDate">Berekenen...</div>
       <div class="strat-box">
         <div class="strat-lbl">STRATEGIE</div>
@@ -673,8 +673,8 @@
 const ENTRY  = 149.00;
 const CALL_T = 165.00;  // break-even UP (gevaar voor short)
 const PUT_T  = 133.00;  // break-even DN (gevaar voor short)
-// Oracle Q3 FY2026 earnings: 10 maart 2026 @ 22:00 NL (CET = UTC+1)
-const EARNINGS_TS = new Date('2026-03-10T21:00:00Z').getTime();
+// Oracle Q3 FY2026 earnings: 10 maart 2026 @ 21:00 NL (CET = UTC+1)
+const EARNINGS_TS = new Date('2026-03-10T20:00:00Z').getTime();
 // Optie loopt tot vrijdag 13 maart 2026 @ 22:00 NL (CET = UTC+1)
 const EXPIRY_TS   = new Date('2026-03-13T21:00:00Z').getTime();
 // Positie ingegaan maandag 9 maart @ 15:30 NL (09:30 ET)
@@ -768,7 +768,7 @@ function updateCountdown() {
     ? `Earnings over ${remMins} min (${(diff/3600000).toFixed(1)}u) · Expiry over ${(expDiff/3600000).toFixed(1)}u`
     : `Earnings voorbij · Optie verloopt over ${(expDiff/3600000).toFixed(1)}u`;
   document.getElementById('heroDate').textContent =
-    `Earnings 10 mrt @ 22:00 NL · Expiry vr 13 mrt @ 22:00 NL · Over ${d}d ${f(h)}u ${f(m)}m`;
+    `Earnings 10 mrt @ 21:00 NL · Expiry vr 13 mrt @ 22:00 NL · Over ${d}d ${f(h)}u ${f(m)}m`;
 }
 
 /* ── PRICE SIM ──────────────────────────────────── */
