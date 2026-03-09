@@ -450,9 +450,9 @@
 
     <div class="cd-right">
       <div class="cd-prog-labels">
-        <span>Nu</span>
+        <span>Ma 9/3</span>
         <span id="cdPctLbl">0%</span>
-        <span>⚡ Earnings</span>
+        <span>Vr 13/3</span>
       </div>
       <div class="cd-bar-bg">
         <div class="cd-bar-fill" id="cdFill" style="width:0%"></div>
@@ -462,8 +462,8 @@
         <span class="cd-rem"  id="cdRem">berekenen...</span>
       </div>
       <div class="risk-box">
-        <div class="risk-lbl">CANDLE LIFETIME</div>
-        <div class="risk-val">1680 MIN = 28 UUR</div>
+        <div class="risk-lbl">OPTIE LOOPTIJD</div>
+        <div class="risk-val">MA 9/3 → VR 13/3 · 22:00 NL</div>
         <div class="risk-sub">Max winst: $149 blijft intact ✓ | Max verlies: onbeperkt</div>
       </div>
     </div>
@@ -675,8 +675,11 @@ const CALL_T = 165.00;  // break-even UP (gevaar voor short)
 const PUT_T  = 133.00;  // break-even DN (gevaar voor short)
 // Oracle Q3 FY2026 earnings: 10 maart 2026 @ 22:00 NL (CET = UTC+1)
 const EARNINGS_TS = new Date('2026-03-10T21:00:00Z').getTime();
-const TOTAL_WIN   = 1680 * 60 * 1000;
-const WIN_START   = EARNINGS_TS - TOTAL_WIN;
+// Optie loopt tot vrijdag 13 maart 2026 @ 22:00 NL (CET = UTC+1)
+const EXPIRY_TS   = new Date('2026-03-13T21:00:00Z').getTime();
+// Positie ingegaan maandag 9 maart @ 15:30 NL (09:30 ET)
+const WIN_START   = new Date('2026-03-09T14:30:00Z').getTime();
+const TOTAL_WIN   = EXPIRY_TS - WIN_START;
 
 /* ── STARS ─────────────────────────────────────── */
 (function() {
@@ -733,6 +736,7 @@ function updateCountdown() {
   const now  = Date.now();
   const diff = Math.max(EARNINGS_TS - now, 0);
   const pct  = Math.min(((now - WIN_START) / TOTAL_WIN) * 100, 100);
+  const expDiff = Math.max(EXPIRY_TS - now, 0);
 
   const d = Math.floor(diff/86400000);
   const h = Math.floor((diff%86400000)/3600000);
@@ -760,9 +764,11 @@ function updateCountdown() {
   document.getElementById('cdPctLbl').textContent = pct.toFixed(1)+'%';
 
   const remMins = Math.floor(diff/60000);
-  document.getElementById('cdRem').textContent = `Nog ${remMins} min (${(diff/3600000).toFixed(1)}u)`;
+  document.getElementById('cdRem').textContent = diff > 0
+    ? `Earnings over ${remMins} min (${(diff/3600000).toFixed(1)}u) · Expiry over ${(expDiff/3600000).toFixed(1)}u`
+    : `Earnings voorbij · Optie verloopt over ${(expDiff/3600000).toFixed(1)}u`;
   document.getElementById('heroDate').textContent =
-    `10 mrt 2026 @ 22:00 NL · Over ${d}d ${f(h)}u ${f(m)}m`;
+    `Earnings 10 mrt @ 22:00 NL · Expiry vr 13 mrt @ 22:00 NL · Over ${d}d ${f(h)}u ${f(m)}m`;
 }
 
 /* ── PRICE SIM ──────────────────────────────────── */
