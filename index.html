@@ -1180,6 +1180,18 @@ async function tryFetch(url) {
   return null;
 }
 
+// Laad gecachede prijs direct bij opstarten
+try {
+  const cached = JSON.parse(localStorage.getItem('orcl_price_cache') || 'null');
+  if (cached?.ORCL?.p) {
+    price = cached.ORCL.p;
+    const ageH = (Date.now() - (cached._ts || 0)) / 3600000;
+    const src = document.getElementById('priceSource');
+    if (src) { src.className = 'pill p-gray'; src.textContent = '● CACHED · ' + Math.round(ageH) + 'u oud'; }
+    updateDisplay();
+  }
+} catch(e) {}
+
 async function fetchLivePrice() {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
   const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
@@ -1192,9 +1204,11 @@ async function fetchLivePrice() {
     const orclQ = results.find(q => q.symbol === 'ORCL');
     const marketState = orclQ?.marketState || 'REGULAR';
 
+    const cache = {};
     results.forEach(q => {
       const lp = q.regularMarketPrice;
       if (!lp) return;
+      cache[q.symbol] = { p: lp, pc: q.regularMarketPreviousClose || lp };
       if (q.symbol === 'ORCL') {
         price  = lp;
         priceH = Math.max(priceH, q.regularMarketDayHigh || lp);
@@ -1208,6 +1222,7 @@ async function fetchLivePrice() {
         }
       }
     });
+    try { localStorage.setItem('orcl_price_cache', JSON.stringify({ ...cache, _ts: Date.now(), _state: marketState })); } catch(e) {}
 
     const ts = new Date().toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const src = document.getElementById('priceSource');
@@ -1237,6 +1252,17 @@ async function fetchLivePrice() {
       const isWeekend = [0,6].includes(new Date().getDay());
       const h = new Date().getUTCHours();
       const marketsClosed = isWeekend || h < 13 || h >= 21;
+      try {
+        const cached = JSON.parse(localStorage.getItem('orcl_price_cache') || 'null');
+        if (cached?.ORCL?.p) {
+          price = cached.ORCL.p;
+          const ageH = Math.round((Date.now() - (cached._ts || 0)) / 3600000);
+          src.className = 'pill p-gray';
+          src.textContent = marketsClosed ? ('● SLOTKOERS · ' + ageH + 'u') : ('⚠ CACHED · ' + ageH + 'u');
+          updateDisplay();
+          return;
+        }
+      } catch(ce) {}
       if (marketsClosed) {
         src.className = 'pill p-gray'; src.textContent = '● MARKT GESLOTEN';
       } else if (!liveDataOk) {
