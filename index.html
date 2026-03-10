@@ -417,6 +417,7 @@
     <div class="pill p-red">GEVAAR ▲ $165</div>
     <div class="pill p-red">GEVAAR ▼ $133</div>
     <div class="live-pill"><div class="live-dot"></div>LIVE SIM</div>
+    <div class="pill p-blue" id="priceSource">⏳ laden…</div>
     <div class="sim-btn" id="simToggle" onclick="toggleSim()">▶ SIMULATIE AAN</div>
   </div>
   <div class="header-clock" id="clock">--:--:--</div>
@@ -483,7 +484,6 @@
         <div class="price-sym">ORCL · NYSE</div>
         <div class="price-num flat" id="priceNum">$149.00</div>
         <div class="price-chg up"  id="priceChg">▶ +$0.00 (0.00%)</div>
-        <div id="priceSource" style="font-family:'Share Tech Mono',monospace;font-size:.62rem;margin-top:6px;color:rgba(200,214,229,.4);">⏳ live data laden…</div>
         <div class="ohlc">
           <div class="ohlc-item"><div class="ohlc-l">OPEN</div><div class="ohlc-v">$149.00</div></div>
           <div class="ohlc-item"><div class="ohlc-l">HOOG</div><div class="ohlc-v" id="dayH">$149.00</div></div>
@@ -1190,10 +1190,9 @@ async function fetchLivePrice() {
       }
     });
 
-    const now = new Date();
-    const ts = now.toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const ts = new Date().toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const src = document.getElementById('priceSource');
-    if (src) { src.style.color = 'rgba(0,255,136,.6)'; src.textContent = '● LIVE · Yahoo Finance · ' + ts; }
+    if (src) { src.className = 'pill p-green'; src.textContent = '● LIVE · ' + ts; }
 
     if (!liveDataOk) {
       liveDataOk = true;
@@ -1205,7 +1204,7 @@ async function fetchLivePrice() {
   } catch(e) {
     console.warn('Live price fetch mislukt:', e.message);
     const src = document.getElementById('priceSource');
-    if (src && !liveDataOk) { src.style.color = 'rgba(255,56,96,.7)'; src.textContent = '✕ geen live data — wacht op markt'; }
+    if (src && !liveDataOk) { src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA'; }
   }
 }
 fetchLivePrice();
@@ -1223,7 +1222,7 @@ function toggleSim() {
     btn.textContent = '⏹ SIMULATIE UIT';
     btn.classList.add('active');
     const src = document.getElementById('priceSource');
-    if (src) { src.style.color = 'rgba(255,215,0,.7)'; src.textContent = '⚡ SIMULATIE ACTIEF — geen echte koers'; }
+    if (src) { src.className = 'pill p-gold'; src.textContent = '⚡ SIMULATIE'; }
   } else {
     clearInterval(simInterval);
     simInterval = null;
