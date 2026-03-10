@@ -1185,22 +1185,22 @@ function isMarketOpen() {
   const now = new Date();
   const day = now.getUTCDay(); // 0=zo, 6=za
   if (day === 0 || day === 6) return false;
-  const h = now.getUTCHours(), m = now.getUTCMinutes();
-  const mins = h * 60 + m;
-  return mins >= 930 && mins < 1260; // 15:30–21:00 UTC = NYSE
+  const mins = now.getUTCHours() * 60 + now.getUTCMinutes();
+  // NYSE: 09:30–16:00 ET. EDT (mrt–nov) = UTC-4 → 13:30–20:00 UTC (810–1200)
+  //                       EST (nov–mrt) = UTC-5 → 14:30–21:00 UTC (870–1260)
+  // Gebruik 810–1260 om beide seizoenen te dekken zonder DST-logica
+  return mins >= 810 && mins < 1260;
 }
 
 function lastTradingDateStr() {
   const d = new Date();
-  // Stap terug naar vorige werkdag als weekend/na sluit
+  // Spring terug over het weekend
   while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
-  if (!isMarketOpen()) {
-    // Als voor opening: gebruik vorige werkdag
-    const h = d.getUTCHours() * 60 + d.getUTCMinutes();
-    if (h < 930) {
-      d.setUTCDate(d.getUTCDate() - 1);
-      while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
-    }
+  // Als NYSE vandaag nog niet geopend heeft (voor 13:30 UTC) → vorige handelsdag
+  const mins = d.getUTCHours() * 60 + d.getUTCMinutes();
+  if (mins < 810) {
+    d.setUTCDate(d.getUTCDate() - 1);
+    while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
   }
   return d.toISOString().slice(0, 10); // 'YYYY-MM-DD'
 }
@@ -1236,7 +1236,7 @@ function applyCache(cached, label) {
   }
 })();
 
-async function fetchLivePrice() {
+async function fetchLivePrice(histMode = false) {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
   const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
               '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose,marketState';
@@ -1297,27 +1297,15 @@ async function fetchLivePrice() {
   } catch(e) {
     console.warn('Live price fetch mislukt:', e.message);
     const src = document.getElementById('priceSource');
-    if (src) {
-      const isWeekend = [0,6].includes(new Date().getDay());
-      const h = new Date().getUTCHours();
-      const marketsClosed = isWeekend || h < 13 || h >= 21;
-      // Probeer cache te gebruiken als fallback
-      try {
-        const cached = JSON.parse(localStorage.getItem('orcl_price_cache') || 'null');
-        if (cached?.ORCL?.p) {
-          price = cached.ORCL.p;
-          const ageH = Math.round((Date.now() - (cached._ts || 0)) / 3600000);
-          src.className = 'pill p-gray';
-          src.textContent = marketsClosed ? ('● SLOTKOERS · ' + ageH + 'u') : ('⚠ CACHED · ' + ageH + 'u');
-          updateDisplay();
-          return;
-        }
-      } catch(ce) {}
-      if (marketsClosed) {
-        src.className = 'pill p-gray'; src.textContent = '● MARKT GESLOTEN';
-      } else if (!liveDataOk) {
-        src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA';
-      }
+    if (!src) return;
+    if (histMode) {
+      // Historische slotkoers ophalen mislukt — toon duidelijke fout
+      src.className = 'pill p-red'; src.textContent = '✕ HIST. LADEN MISLUKT';
+      notify('Slotkoers 03/09 niet ophaalbaar — controleer verbinding', 'error');
+    } else if (!isMarketOpen()) {
+      src.className = 'pill p-gray'; src.textContent = '✕ GEEN VERBINDING';
+    } else if (!liveDataOk) {
+      src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA';
     }
   }
 }
@@ -1329,11 +1317,14 @@ async function fetchLivePrice() {
 
   if (isMarketOpen()) {
     // Markt open → live pollen elke 15s
-    fetchLivePrice();
-    setInterval(fetchLivePrice, 15000);
+    fetchLivePrice(false);
+    setInterval(() => fetchLivePrice(false), 15000);
   } else if (cacheDate !== tradingDate) {
-    // Markt dicht maar cache is niet van vandaag → eenmalig ophalen voor slotkoers
-    fetchLivePrice();
+    // Markt dicht maar cache is niet van handelsdag → eenmalig ophalen voor slotkoers
+    // Zet badge alvast op "laden..." zodat de gebruiker feedback ziet
+    const src = document.getElementById('priceSource');
+    if (src) { src.className = 'pill p-blue'; src.textContent = '⏳ SLOTKOERS LADEN…'; }
+    fetchLivePrice(true);
   }
   // Anders: cache is actueel, geen enkel API-verzoek nodig
 })();

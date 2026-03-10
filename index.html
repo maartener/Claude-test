@@ -1186,18 +1186,16 @@ function isMarketOpen() {
   const day = now.getUTCDay();
   if (day === 0 || day === 6) return false;
   const mins = now.getUTCHours() * 60 + now.getUTCMinutes();
-  return mins >= 930 && mins < 1260;
+  return mins >= 810 && mins < 1260; // 13:30–21:00 UTC dekt EDT én EST
 }
 
 function lastTradingDateStr() {
   const d = new Date();
   while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
-  if (!isMarketOpen()) {
-    const mins = d.getUTCHours() * 60 + d.getUTCMinutes();
-    if (mins < 930) {
-      d.setUTCDate(d.getUTCDate() - 1);
-      while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
-    }
+  const mins = d.getUTCHours() * 60 + d.getUTCMinutes();
+  if (mins < 810) { // voor NYSE opening → vorige handelsdag
+    d.setUTCDate(d.getUTCDate() - 1);
+    while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
   }
   return d.toISOString().slice(0, 10);
 }
@@ -1231,7 +1229,7 @@ function applyCache(cached, label) {
   }
 })();
 
-async function fetchLivePrice() {
+async function fetchLivePrice(histMode = false) {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
   const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
               '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose,marketState';
@@ -1287,26 +1285,14 @@ async function fetchLivePrice() {
   } catch(e) {
     console.warn('Live price fetch mislukt:', e.message);
     const src = document.getElementById('priceSource');
-    if (src) {
-      const isWeekend = [0,6].includes(new Date().getDay());
-      const h = new Date().getUTCHours();
-      const marketsClosed = isWeekend || h < 13 || h >= 21;
-      try {
-        const cached = JSON.parse(localStorage.getItem('orcl_price_cache') || 'null');
-        if (cached?.ORCL?.p) {
-          price = cached.ORCL.p;
-          const ageH = Math.round((Date.now() - (cached._ts || 0)) / 3600000);
-          src.className = 'pill p-gray';
-          src.textContent = marketsClosed ? ('● SLOTKOERS · ' + ageH + 'u') : ('⚠ CACHED · ' + ageH + 'u');
-          updateDisplay();
-          return;
-        }
-      } catch(ce) {}
-      if (marketsClosed) {
-        src.className = 'pill p-gray'; src.textContent = '● MARKT GESLOTEN';
-      } else if (!liveDataOk) {
-        src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA';
-      }
+    if (!src) return;
+    if (histMode) {
+      src.className = 'pill p-red'; src.textContent = '✕ HIST. LADEN MISLUKT';
+      notify('Slotkoers 03/09 niet ophaalbaar — controleer verbinding', 'error');
+    } else if (!isMarketOpen()) {
+      src.className = 'pill p-gray'; src.textContent = '✕ GEEN VERBINDING';
+    } else if (!liveDataOk) {
+      src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA';
     }
   }
 }
@@ -1316,10 +1302,12 @@ async function fetchLivePrice() {
   const tradingDate = lastTradingDateStr();
 
   if (isMarketOpen()) {
-    fetchLivePrice();
-    setInterval(fetchLivePrice, 15000);
+    fetchLivePrice(false);
+    setInterval(() => fetchLivePrice(false), 15000);
   } else if (cacheDate !== tradingDate) {
-    fetchLivePrice();
+    const src = document.getElementById('priceSource');
+    if (src) { src.className = 'pill p-blue'; src.textContent = '⏳ SLOTKOERS LADEN…'; }
+    fetchLivePrice(true);
   }
 })();
 
