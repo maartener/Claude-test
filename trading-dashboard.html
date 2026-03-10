@@ -1162,17 +1162,32 @@ setTimeout(() => notify('Short straddle: verkoopt volatiliteit, verdient premie'
 
 /* ── LIVE PRICE FETCH ────────────────────────────── */
 let liveDataOk = false;
+
+async function tryFetch(url) {
+  const proxies = [
+    u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
+    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+    u => 'https://corsproxy.org/?url=' + encodeURIComponent(u),
+  ];
+  for (const mkProxy of proxies) {
+    try {
+      const res = await fetch(mkProxy(url), { signal: AbortSignal.timeout(8000) });
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data?.quoteResponse?.result?.length) return data;
+    } catch(e) { /* try next */ }
+  }
+  return null;
+}
+
 async function fetchLivePrice() {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
   const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
               '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose,marketState';
-  const proxy = 'https://corsproxy.io/?url=' + encodeURIComponent(url);
   try {
-    const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const data = await res.json();
-    const results = data?.quoteResponse?.result;
-    if (!results?.length) throw new Error('No results');
+    const data = await tryFetch(url);
+    if (!data) throw new Error('All proxies failed');
+    const results = data.quoteResponse.result;
 
     // Detect market state from ORCL quote
     const orclQ = results.find(q => q.symbol === 'ORCL');
