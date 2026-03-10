@@ -1180,17 +1180,56 @@ async function tryFetch(url) {
   return null;
 }
 
-// Laad gecachede prijs direct bij opstarten
-try {
-  const cached = JSON.parse(localStorage.getItem('orcl_price_cache') || 'null');
-  if (cached?.ORCL?.p) {
-    price = cached.ORCL.p;
-    const ageH = (Date.now() - (cached._ts || 0)) / 3600000;
-    const src = document.getElementById('priceSource');
-    if (src) { src.className = 'pill p-gray'; src.textContent = '● CACHED · ' + Math.round(ageH) + 'u oud'; }
-    updateDisplay();
+/* ── CACHE HELPERS ───────────────────────────────── */
+function isMarketOpen() {
+  const now = new Date();
+  const day = now.getUTCDay();
+  if (day === 0 || day === 6) return false;
+  const mins = now.getUTCHours() * 60 + now.getUTCMinutes();
+  return mins >= 930 && mins < 1260;
+}
+
+function lastTradingDateStr() {
+  const d = new Date();
+  while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
+  if (!isMarketOpen()) {
+    const mins = d.getUTCHours() * 60 + d.getUTCMinutes();
+    if (mins < 930) {
+      d.setUTCDate(d.getUTCDate() - 1);
+      while (d.getUTCDay() === 0 || d.getUTCDay() === 6) d.setUTCDate(d.getUTCDate() - 1);
+    }
   }
-} catch(e) {}
+  return d.toISOString().slice(0, 10);
+}
+
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem('orcl_price_cache') || 'null'); } catch(e) { return null; }
+}
+
+function applyCache(cached, label) {
+  if (!cached?.ORCL?.p) return false;
+  price = cached.ORCL.p;
+  if (tapePx && cached) {
+    tapePx.forEach(t => { if (cached[t.s]) { t.p = cached[t.s].p; t.b = cached[t.s].pc || t.p; } });
+  }
+  const src = document.getElementById('priceSource');
+  if (src) { src.className = 'pill p-gray'; src.textContent = label; }
+  updateDisplay();
+  return true;
+}
+
+(function() {
+  const cached = loadCache();
+  if (!cached?.ORCL?.p) return;
+  const cacheDate = cached._date || '';
+  const tradingDate = lastTradingDateStr();
+  if (cacheDate === tradingDate) {
+    applyCache(cached, isMarketOpen() ? '● CACHED · laden…' : ('● SLOTKOERS ' + tradingDate.slice(5)));
+  } else {
+    const ageH = Math.round((Date.now() - (cached._ts || 0)) / 3600000);
+    applyCache(cached, '● OUD CACHE · ' + ageH + 'u');
+  }
+})();
 
 async function fetchLivePrice() {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
@@ -1222,7 +1261,7 @@ async function fetchLivePrice() {
         }
       }
     });
-    try { localStorage.setItem('orcl_price_cache', JSON.stringify({ ...cache, _ts: Date.now(), _state: marketState })); } catch(e) {}
+    try { localStorage.setItem('orcl_price_cache', JSON.stringify({ ...cache, _ts: Date.now(), _date: lastTradingDateStr(), _state: marketState })); } catch(e) {}
 
     const ts = new Date().toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const src = document.getElementById('priceSource');
@@ -1271,8 +1310,18 @@ async function fetchLivePrice() {
     }
   }
 }
-fetchLivePrice();
-setInterval(fetchLivePrice, 15000);
+(function scheduleFetch() {
+  const cached = loadCache();
+  const cacheDate = cached?._date || '';
+  const tradingDate = lastTradingDateStr();
+
+  if (isMarketOpen()) {
+    fetchLivePrice();
+    setInterval(fetchLivePrice, 15000);
+  } else if (cacheDate !== tradingDate) {
+    fetchLivePrice();
+  }
+})();
 
 /* ── MAIN LOOP ───────────────────────────────────── */
 let simRunning = false;
