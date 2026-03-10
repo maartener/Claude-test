@@ -66,6 +66,7 @@
     .p-gold   { color:var(--gold);  border-color:rgba(255,215,0,.35);  background:rgba(255,215,0,.07); }
     .p-green  { color:var(--green); border-color:rgba(0,255,136,.3);   background:rgba(0,255,136,.06); }
     .p-blue   { color:var(--blue);  border-color:rgba(0,212,255,.3);   background:rgba(0,212,255,.06); }
+    .p-gray   { color:rgba(200,214,229,.5); border-color:rgba(200,214,229,.2); background:rgba(200,214,229,.05); }
     .p-alert  { color:#fff; border-color:rgba(255,56,96,.5); background:rgba(255,56,96,.18);
                 animation: pill-pulse 1.8s ease-in-out infinite; }
     @keyframes pill-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(255,56,96,.4)} 50%{box-shadow:0 0 0 6px rgba(255,56,96,0)} }
@@ -1164,7 +1165,7 @@ let liveDataOk = false;
 async function fetchLivePrice() {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
   const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
-              '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose';
+              '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose,marketState';
   const proxy = 'https://corsproxy.io/?url=' + encodeURIComponent(url);
   try {
     const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
@@ -1172,6 +1173,10 @@ async function fetchLivePrice() {
     const data = await res.json();
     const results = data?.quoteResponse?.result;
     if (!results?.length) throw new Error('No results');
+
+    // Detect market state from ORCL quote
+    const orclQ = results.find(q => q.symbol === 'ORCL');
+    const marketState = orclQ?.marketState || 'REGULAR'; // REGULAR, PRE, POST, CLOSED, PREPRE, POSTPOST
 
     results.forEach(q => {
       const lp = q.regularMarketPrice;
@@ -1192,10 +1197,20 @@ async function fetchLivePrice() {
       }
     });
 
-    // Update source label with timestamp
+    // Update source label with timestamp + market state
     const ts = new Date().toLocaleTimeString('nl-NL', {hour:'2-digit',minute:'2-digit',second:'2-digit'});
     const src = document.getElementById('priceSource');
-    if (src) { src.className = 'pill p-green'; src.textContent = '● LIVE · ' + ts; }
+    if (src) {
+      if (marketState === 'REGULAR') {
+        src.className = 'pill p-green'; src.textContent = '● LIVE · ' + ts;
+      } else if (marketState === 'PRE') {
+        src.className = 'pill p-blue'; src.textContent = '◐ PRE-MARKET · ' + ts;
+      } else if (marketState === 'POST' || marketState === 'POSTPOST') {
+        src.className = 'pill p-blue'; src.textContent = '◑ NABEURS · ' + ts;
+      } else {
+        src.className = 'pill p-gray'; src.textContent = '● SLOTKOERS · ' + ts;
+      }
+    }
 
     if (!liveDataOk) {
       liveDataOk = true;
@@ -1207,7 +1222,16 @@ async function fetchLivePrice() {
   } catch(e) {
     console.warn('Live price fetch mislukt:', e.message);
     const src = document.getElementById('priceSource');
-    if (src && !liveDataOk) { src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA'; }
+    if (src) {
+      const isWeekend = [0,6].includes(new Date().getDay());
+      const h = new Date().getUTCHours();
+      const marketsClosed = isWeekend || h < 13 || h >= 21; // NYSE 09:30–16:00 ET = 14:30–21:00 UTC
+      if (marketsClosed) {
+        src.className = 'pill p-gray'; src.textContent = '● MARKT GESLOTEN';
+      } else if (!liveDataOk) {
+        src.className = 'pill p-red'; src.textContent = '✕ GEEN DATA';
+      }
+    }
   }
 }
 fetchLivePrice();
