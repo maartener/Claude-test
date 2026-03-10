@@ -1163,21 +1163,49 @@ setTimeout(() => notify('Short straddle: verkoopt volatiliteit, verdient premie'
 /* ── LIVE PRICE FETCH ────────────────────────────── */
 let liveDataOk = false;
 
-async function tryFetch(url) {
-  const proxies = [
-    u => 'https://corsproxy.io/?url=' + encodeURIComponent(u),
-    u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
-    u => 'https://corsproxy.org/?url=' + encodeURIComponent(u),
-  ];
-  for (const mkProxy of proxies) {
+const PROXIES = [
+  u => 'https://corsproxy.io/?url='          + encodeURIComponent(u),
+  u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
+  u => 'https://thingproxy.freeboard.io/fetch/' + encodeURIComponent(u),
+  u => 'https://corsproxy.org/?url='         + encodeURIComponent(u),
+];
+
+async function tryProxies(url, validateFn) {
+  for (let i = 0; i < PROXIES.length; i++) {
+    const proxyUrl = PROXIES[i](url);
     try {
-      const res = await fetch(mkProxy(url), { signal: AbortSignal.timeout(8000) });
-      if (!res.ok) continue;
+      const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(9000) });
+      if (!res.ok) { console.warn(`Proxy ${i+1} HTTP ${res.status}`); continue; }
       const data = await res.json();
-      if (data?.quoteResponse?.result?.length) return data;
-    } catch(e) { /* try next */ }
+      if (validateFn(data)) { console.log(`Proxy ${i+1} OK`); return data; }
+      console.warn(`Proxy ${i+1} invalid response`);
+    } catch(e) { console.warn(`Proxy ${i+1} error:`, e.message); }
   }
   return null;
+}
+
+async function fetchQuotes(symbols) {
+  const url = 'https://query2.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
+              '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose,marketState';
+  return tryProxies(url, d => d?.quoteResponse?.result?.length > 0);
+}
+
+async function fetchChartORCL() {
+  const url = 'https://query2.finance.yahoo.com/v8/finance/chart/ORCL?interval=1d&range=5d&includePrePost=false';
+  const data = await tryProxies(url, d => d?.chart?.result?.length > 0);
+  if (!data) return null;
+  const meta = data.chart.result[0].meta;
+  return {
+    quoteResponse: { result: [{
+      symbol: 'ORCL',
+      regularMarketPrice: meta.regularMarketPrice,
+      regularMarketDayHigh: meta.regularMarketDayHigh || meta.regularMarketPrice,
+      regularMarketDayLow:  meta.regularMarketDayLow  || meta.regularMarketPrice,
+      regularMarketPreviousClose: meta.chartPreviousClose || meta.previousClose,
+      marketState: meta.marketState || 'CLOSED'
+    }]}
+  };
 }
 
 /* ── CACHE HELPERS ───────────────────────────────── */
@@ -1231,11 +1259,14 @@ function applyCache(cached, label) {
 
 async function fetchLivePrice(histMode = false) {
   const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
-  const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
-              '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose,marketState';
   try {
-    const data = await tryFetch(url);
-    if (!data) throw new Error('All proxies failed');
+    console.log(histMode ? 'Historische slotkoers ophalen...' : 'Live koers ophalen...');
+    let data = await fetchQuotes(symbols);
+    if (!data) {
+      console.log('v7 quote mislukt, probeer v8 chart voor ORCL...');
+      data = await fetchChartORCL();
+    }
+    if (!data) throw new Error('Alle endpoints en proxies mislukt');
     const results = data.quoteResponse.result;
 
     const orclQ = results.find(q => q.symbol === 'ORCL');
