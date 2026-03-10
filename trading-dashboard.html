@@ -705,6 +705,7 @@ const TOTAL_WIN   = EXPIRY_TS - WIN_START;
 })();
 
 /* ── TAPE ───────────────────────────────────────── */
+let tapePx = null; // exposed so live fetch can update ORCL
 (function() {
   const tks = [
     {s:'ORCL',b:149},{s:'MSFT',b:415},{s:'AAPL',b:188},{s:'AMZN',b:196},
@@ -712,6 +713,7 @@ const TOTAL_WIN   = EXPIRY_TS - WIN_START;
     {s:'SPY',b:520},{s:'QQQ',b:447},{s:'IBM',b:218},{s:'CRM',b:285}
   ];
   let px = tks.map(t=>({...t,p:t.b}));
+  tapePx = px;
   function build() {
     px.forEach(t=>t.p+=(Math.random()-.5)*t.b*.003);
     const h = px.map(t=>{
@@ -1151,6 +1153,52 @@ setTimeout(() => {
   notify(`⚠ Earnings over ±${rem} min — IV crush verwacht na morgen`, 'warning');
 }, 2000);
 setTimeout(() => notify('Short straddle: verkoopt volatiliteit, verdient premie', 'info'), 3800);
+
+/* ── LIVE PRICE FETCH ────────────────────────────── */
+let liveDataOk = false;
+async function fetchLivePrice() {
+  const symbols = 'ORCL,MSFT,AAPL,AMZN,GOOGL,META,TSLA,NVDA,SPY,QQQ,IBM,CRM';
+  const url = 'https://query1.finance.yahoo.com/v7/finance/quote?symbols=' + symbols +
+              '&fields=regularMarketPrice,regularMarketDayHigh,regularMarketDayLow,regularMarketPreviousClose';
+  const proxy = 'https://corsproxy.io/?url=' + encodeURIComponent(url);
+  try {
+    const res = await fetch(proxy, { signal: AbortSignal.timeout(10000) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const results = data?.quoteResponse?.result;
+    if (!results?.length) throw new Error('No results');
+
+    results.forEach(q => {
+      const lp = q.regularMarketPrice;
+      if (!lp) return;
+      // Update main ORCL price
+      if (q.symbol === 'ORCL') {
+        price  = lp;
+        priceH = Math.max(priceH, q.regularMarketDayHigh || lp);
+        priceL = Math.min(priceL, q.regularMarketDayLow  || lp);
+      }
+      // Update tape
+      if (tapePx) {
+        const t = tapePx.find(x => x.s === q.symbol);
+        if (t) {
+          t.p = lp;
+          t.b = q.regularMarketPreviousClose || t.b;
+        }
+      }
+    });
+
+    if (!liveDataOk) {
+      liveDataOk = true;
+      const badge = document.querySelector('.live-pill');
+      if (badge) badge.innerHTML = '<div class="live-dot"></div>LIVE';
+      notify('Live ORCL koers geladen ✓', 'info');
+    }
+  } catch(e) {
+    console.warn('Live price fetch mislukt:', e.message);
+  }
+}
+fetchLivePrice();
+setInterval(fetchLivePrice, 15000);
 
 /* ── MAIN LOOP ───────────────────────────────────── */
 function tick() { updateCountdown(); simTick(); }
