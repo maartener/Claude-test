@@ -1,555 +1,463 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Droefcaster – Jouw gids door het moeras</title>
+  <title>Niederl Bar – Schladming</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-
-  <!-- COOKIE BANNER -->
-  <div id="cookie-banner" class="cookie-banner">
-    <p>Wij gebruiken cookies. Je hebt toch al geen keus meer in het leven. <button id="cookie-accept">Oké, ik geef het op</button></p>
-  </div>
-
-  <!-- STICKY AUDIO PLAYER -->
-  <div class="sticky-player" id="sticky-player">
-    <div class="player-inner">
-      <div class="player-info">
-        <div class="player-thumb">🎙️</div>
-        <div class="player-meta">
-          <span class="player-title">Afl. 47: "Dingen die toch niet uitkomen"</span>
-          <span class="player-show">Droefcaster Podcast</span>
-        </div>
-      </div>
-      <div class="player-controls">
-        <button class="player-btn" id="prev-btn" title="Vorige">⏮</button>
-        <button class="player-btn play-btn" id="play-btn" title="Spelen/Pauzeren">▶</button>
-        <button class="player-btn" id="next-btn" title="Volgende">⏭</button>
-      </div>
-      <div class="player-progress-wrap">
-        <span class="time-current" id="time-current">00:00</span>
-        <div class="player-progress" id="player-progress">
-          <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <span class="time-total">47:23</span>
-      </div>
-      <div class="player-extra">
-        <select class="speed-select" id="speed-select">
-          <option value="0.5">0.5x (depressief)</option>
-          <option value="0.75">0.75x (traag)</option>
-          <option value="1" selected>1x (normaal triest)</option>
-          <option value="1.25">1.25x (enigszins haastig verdrietig)</option>
-        </select>
-        <button class="player-btn" id="mute-btn" title="Dempen">🔈</button>
-      </div>
-    </div>
-  </div>
 
   <!-- NAVIGATION -->
   <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="#" class="nav-logo">
-        <span class="logo-icon">😔</span>
-        <span class="logo-text">Droef<span class="logo-accent">caster</span></span>
+      <a href="#home" class="nav-logo">
+        <span class="nav-logo-script">Niederl Bar</span>
       </a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu öffnen">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-links">
         <li><a href="#home" class="nav-link">Home</a></li>
-        <li><a href="#over-mij" class="nav-link">Over Mij (een beetje)</a></li>
-        <li><a href="#diensten" class="nav-link">Diensten (soort van)</a></li>
-        <li><a href="#podcast" class="nav-link">Podcast</a></li>
-        <li><a href="#blog" class="nav-link">Blog (soms)</a></li>
-        <li><a href="#contact" class="nav-link">Contact (probeer maar)</a></li>
-        <li><a href="#" class="nav-cta">Gratis Intake</a></li>
+        <li><a href="#about" class="nav-link">Über uns</a></li>
+        <li><a href="#menu" class="nav-link">Getränke</a></li>
+        <li><a href="#opening" class="nav-link">Öffnungszeiten</a></li>
+        <li><a href="#contact" class="nav-link">Kontakt</a></li>
       </ul>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-bg-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-    </div>
-    <div class="container hero-content">
-      <div class="hero-badge">🌧️ #1 Meest Gemiddelde Business Coach van Nederland</div>
-      <h1 class="hero-title">
-        Laat je business<br/>
-        <span class="hero-accent">langzaam</span><br/>
-        achteruitgaan.
-      </h1>
-      <p class="hero-sub">
-        Welkom bij Droefcaster. Ik help ondernemers zoals jij om realistic expectations te hebben,
-        doelen te formuleren die misschien iets te hoog gegrepen zijn, en uiteindelijk toch maar
-        gewoon te accepteren dat het is zoals het is.
-      </p>
-      <div class="hero-cta-group">
-        <a href="#diensten" class="btn btn-primary">Begin met opgeven →</a>
-        <a href="#podcast" class="btn btn-ghost">Luister de droefste podcast</a>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-wineglass">
+        <svg viewBox="0 0 120 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="wineglass-svg">
+          <path d="M20 10 Q20 80 60 110 Q100 80 100 10 Z" stroke="rgba(201,169,110,0.4)" stroke-width="1.5" fill="none"/>
+          <line x1="60" y1="110" x2="60" y2="170" stroke="rgba(201,169,110,0.4)" stroke-width="1.5"/>
+          <line x1="35" y1="170" x2="85" y2="170" stroke="rgba(201,169,110,0.4)" stroke-width="1.5"/>
+        </svg>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">3</span>
-          <span class="stat-label">tevreden klanten (van de 847)</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">47</span>
-          <span class="stat-label">afleveringen (meeste maar half af)</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num">0,5★</span>
-          <span class="stat-label">gemiddelde beoordeling</span>
-        </div>
+      <p class="hero-tagline">Willkommen in der</p>
+      <h1 class="hero-title">Niederl Bar</h1>
+      <div class="hero-divider">
+        <span class="divider-line"></span>
+        <span class="divider-diamond">◆</span>
+        <span class="divider-line"></span>
       </div>
+      <p class="hero-location">SCHLADMING</p>
+      <a href="#about" class="hero-cta">Entdecken Sie uns</a>
     </div>
-    <div class="hero-scroll-hint">
-      <span>Scroll maar, je hebt toch niets beters te doen</span>
-      <div class="scroll-arrow">↓</div>
+    <div class="hero-scroll">
+      <span class="scroll-text">SCROLL</span>
+      <div class="scroll-line"></div>
     </div>
   </section>
 
-  <!-- OVER MIJ -->
-  <section class="about" id="over-mij">
-    <div class="container about-grid">
-      <div class="about-image-wrap">
-        <div class="about-photo">
-          <div class="photo-placeholder">
-            <span class="photo-emoji">😐</span>
-            <p>Dit had een professionele foto kunnen zijn</p>
-          </div>
-        </div>
-        <div class="about-badge-float">
-          <span>12 jaar ervaring<br/>(voelt langer)</span>
-        </div>
-      </div>
-      <div class="about-text">
-        <div class="section-tag">Over Mij</div>
-        <h2 class="section-title">Hoi, ik ben <span class="accent">Jurremand</span><br/>Business Coach</h2>
-        <p class="about-lead">
-          Ik geloof dat iedere ondernemer het potentieel heeft om... tja, gewoon te overleven eigenlijk. Dat is al heel wat.
-        </p>
-        <p>
-          Na jaren in het bedrijfsleven — waarin ik zelf ook regelmatig volledig verkeerde keuzes heb gemaakt —
-          heb ik geleerd dat succes relatief is. Heel erg relatief. En dat is okay.
-          Mijn missie? Jou helpen om ook okay te zijn met okay zijn.
-        </p>
-        <p>
-          Ik ben opgeleid als coach, ondernemer en iemand die te lang naar motiverende quotes heeft gekeken
-          totdat het niet meer werkte. Nu deel ik die wijsheid met jou.
-        </p>
-        <div class="about-skills">
-          <div class="skill-item">
-            <span class="skill-icon">📉</span>
-            <span>Groeistagnatie begeleiding</span>
-          </div>
-          <div class="skill-item">
-            <span class="skill-icon">😪</span>
-            <span>Burnout preventie (door verwachtingen te verlagen)</span>
-          </div>
-          <div class="skill-item">
-            <span class="skill-icon">🌫️</span>
-            <span>Strategisch onduidelijk plannen</span>
-          </div>
-          <div class="skill-item">
-            <span class="skill-icon">🎙️</span>
-            <span>Podcasting (matig beluisterd)</span>
-          </div>
-        </div>
-        <a href="#contact" class="btn btn-primary">Plan een gesprek (als je wilt)</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- DIENSTEN -->
-  <section class="services" id="diensten">
+  <!-- ABOUT -->
+  <section class="about" id="about">
     <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Diensten</div>
-        <h2 class="section-title">Wat ik <span class="accent">zogenaamd</span> doe</h2>
-        <p class="section-sub">Kies het pakket dat het minst slecht bij jou past. Ze zijn allemaal ongeveer hetzelfde.</p>
-      </div>
-      <div class="services-grid">
-        <div class="service-card">
-          <div class="service-icon">🐌</div>
-          <h3>Strategisch Stagneren</h3>
-          <p>Een uitgebreid traject waarbij we samen kijken waarom je business niet groeit en vervolgens accepteren dat dat misschien gewoon zo is.</p>
-          <ul class="service-list">
-            <li>✓ 4 sessies van 60 min (waarvan 20 min koffiezetten)</li>
-            <li>✓ Persoonlijk inzicht (dat je al had)</li>
-            <li>✓ Roadmap die je nooit gebruikt</li>
-            <li>✓ E-mailsupport (antwoord binnen 3-7 werkdagen)</li>
-          </ul>
-          <div class="service-price">€ 997 <span>(was ook al niet veel waard)</span></div>
-          <a href="#contact" class="btn btn-service">Ik doe maar mee</a>
-        </div>
-        <div class="service-card service-featured">
-          <div class="service-badge">Meest gekozen (door 2 mensen)</div>
-          <div class="service-icon">😶</div>
-          <h3>Het Middelmatige Traject</h3>
-          <p>Het volledige pakket. We werken samen aan jouw business totdat één van ons het opgeeft. Gemiddeld duurt dat 3 maanden.</p>
-          <ul class="service-list">
-            <li>✓ 10 sessies (8 gegarandeerd)</li>
-            <li>✓ Onbeperkte WhatsApp (ik lees het echt)</li>
-            <li>✓ Business scan (niet zo diepgaand als het klinkt)</li>
-            <li>✓ Certificaat van deelname (ongelamineerd)</li>
-            <li>✓ Toegang tot mijn podcast (gratis toch al)</li>
-          </ul>
-          <div class="service-price">€ 2.497 <span>(betaal gerust in termijnen, ik vergeet het)</span></div>
-          <a href="#contact" class="btn btn-primary">Vooruit dan maar</a>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">🎤</div>
-          <h3>Podcast Coaching</h3>
-          <p>Ik leer jou hoe je een podcast start. Of je ook luisteraars krijgt, dat is een ander verhaal. Maar starten, dat lukt wel.</p>
-          <ul class="service-list">
-            <li>✓ Technische setup (grotendeels)</li>
-            <li>✓ Format ontwikkeling (vaag)</li>
-            <li>✓ 1 opnamesessie samen</li>
-            <li>✓ Distributie advies (zet het op Spotify)</li>
-          </ul>
-          <div class="service-price">€ 497 <span>(je kan het ook gewoon zelf googlen)</span></div>
-          <a href="#contact" class="btn btn-service">Waarom ook niet</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PODCAST -->
-  <section class="podcast" id="podcast">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Podcast</div>
-        <h2 class="section-title">De <span class="accent">Droefcaster</span> Podcast</h2>
-        <p class="section-sub">Wekelijks een nieuwe aflevering. Soms om de twee weken. Soms langer. We doen ons best.</p>
-      </div>
-
-      <!-- FEATURED EPISODE -->
-      <div class="featured-episode">
-        <div class="ep-cover">
-          <span class="ep-number">Afl. 47</span>
-          <span class="ep-emoji">🌧️</span>
-        </div>
-        <div class="ep-info">
-          <div class="ep-meta">Meest recente aflevering · 47 min · Vorige week (dacht ik)</div>
-          <h3 class="ep-title">"Dingen die toch niet uitkomen" – Een eerlijk gesprek over verwachtingen</h3>
-          <p class="ep-desc">
-            In deze aflevering praat ik met niemand want mijn gast heeft afgezegd.
-            Dus vertel ik gewoon 47 minuten lang mijn eigen gedachten. Het werd eigenlijk best okay.
-            Misschien. Oordeel zelf.
+      <div class="section-label">Über uns</div>
+      <h2 class="section-title">Eine Bar mit <em>Charakter</em></h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="about-lead">
+            Die Niederl Bar ist ein eleganter Rückzugsort im Herzen von Schladming –
+            wo Handwerk, Atmosphäre und Leidenschaft für feine Getränke aufeinandertreffen.
           </p>
-          <div class="ep-cta-row">
-            <button class="btn btn-play" id="ep-play-btn">▶ Speel af</button>
-            <a href="#" class="ep-platform">🍎 Apple Podcasts</a>
-            <a href="#" class="ep-platform">🟢 Spotify</a>
-            <a href="#" class="ep-platform">📻 Google Podcasts</a>
+          <p>
+            Ob Sie nach einem langen Tag auf den Pisten entspannen, einen besonderen Abend
+            feiern oder einfach die Stille eines perfekt gemischten Cocktails genießen möchten –
+            bei uns sind Sie richtig. Unser Team empfängt Sie mit Herzlichkeit und professionellem Service.
+          </p>
+          <p>
+            Seit Jahren ist die Niederl Bar ein fester Bestandteil des Nachtlebens in Schladming
+            und ein Treffpunkt für Einheimische wie Gäste aus aller Welt.
+          </p>
+        </div>
+        <div class="about-features">
+          <div class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 6 Q8 26 20 32 Q32 26 32 6 Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <line x1="20" y1="32" x2="20" y2="38" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="12" y1="38" x2="28" y2="38" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Feine Weine</h3>
+              <p>Sorgfältig ausgewählte Weine aus österreichischen und internationalen Weingütern.</p>
+            </div>
           </div>
-        </div>
-      </div>
-
-      <!-- EPISODE LIST -->
-      <div class="episode-list">
-        <h3 class="ep-list-title">Alle afleveringen <span class="ep-filter-note">(sorteer op: minst goed naar nog minder goed)</span></h3>
-
-        <div class="episodes-filter">
-          <button class="filter-btn active" data-filter="all">Alles</button>
-          <button class="filter-btn" data-filter="business">Business (soort van)</button>
-          <button class="filter-btn" data-filter="mindset">Mindset (neerwaarts)</button>
-          <button class="filter-btn" data-filter="interview">Interviews (die wel doorgingen)</button>
-        </div>
-
-        <div class="episodes" id="episodes-container">
-          <!-- Episodes rendered by JS -->
-        </div>
-
-        <div class="ep-load-more">
-          <button class="btn btn-ghost" id="load-more-btn">Laad meer teleurstellingen</button>
-        </div>
-      </div>
-
-      <!-- SUBSCRIBE SECTION -->
-      <div class="subscribe-bar">
-        <h3>Abonneer je op Droefcaster</h3>
-        <p>Ontvang elke nieuwe aflevering direct in je feed. Of niet, als je dat liever hebt.</p>
-        <div class="platform-buttons">
-          <a href="#" class="platform-btn">🍎 Apple Podcasts</a>
-          <a href="#" class="platform-btn">🟢 Spotify</a>
-          <a href="#" class="platform-btn">📻 Google</a>
-          <a href="#" class="platform-btn">📡 RSS Feed</a>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="8" width="20" height="26" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <line x1="14" y1="14" x2="26" y2="14" stroke="currentColor" stroke-width="1"/>
+                <line x1="14" y1="19" x2="26" y2="19" stroke="currentColor" stroke-width="1"/>
+                <line x1="14" y1="24" x2="22" y2="24" stroke="currentColor" stroke-width="1"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Klassische Cocktails</h3>
+              <p>Zeitlose Klassiker und hausgemachte Kreationen – perfekt gemixt von erfahrenen Barkeepern.</p>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <polyline points="20,14 20,20 24,24" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Perfekte Atmosphäre</h3>
+              <p>Elegantes Ambiente mit stimmungsvoller Beleuchtung und ausgewählter Musik.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
-  <section class="testimonials" id="testimonials">
+  <!-- DIVIDER -->
+  <div class="section-divider">
+    <div class="divider-content">
+      <span class="divider-line"></span>
+      <span class="divider-diamond">◆</span>
+      <span class="divider-line"></span>
+    </div>
+  </div>
+
+  <!-- MENU / DRINKS -->
+  <section class="menu" id="menu">
     <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Ervaringen</div>
-        <h2 class="section-title">Wat klanten <span class="accent">eigenlijk</span> zeggen</h2>
-        <p class="section-sub">Onbewerkte, échte feedback. We hebben niets mooier gemaakt dan het was.</p>
+      <div class="section-label">Getränke</div>
+      <h2 class="section-title">Unsere <em>Auswahl</em></h2>
+      <p class="section-sub">Eine sorgfältig kuratierte Auswahl der feinsten Getränke für jeden Geschmack.</p>
+
+      <div class="menu-tabs">
+        <button class="menu-tab active" data-tab="cocktails">Cocktails</button>
+        <button class="menu-tab" data-tab="wine">Wein & Sekt</button>
+        <button class="menu-tab" data-tab="spirits">Spirituosen</button>
+        <button class="menu-tab" data-tab="nonalc">Alkoholfrei</button>
       </div>
-      <div class="testimonials-slider" id="testimonials-slider">
-        <div class="testimonials-track" id="testimonials-track">
-          <div class="testimonial-card">
-            <div class="t-stars">⭐</div>
-            <p class="t-text">"Het was... een ervaring. Ik heb dingen geleerd. Of ik er iets mee doe, dat zie ik nog wel. Maar de koffie was goed."</p>
-            <div class="t-author">
-              <div class="t-avatar">K</div>
-              <div class="t-info">
-                <strong>Karen B.</strong>
-                <span>ZZP'er, onzeker over alles</span>
-              </div>
+
+      <div class="menu-content active" id="tab-cocktails">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Negroni</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 12</span>
             </div>
+            <p class="menu-item-desc">Gin, Campari, Roter Wermut, Orange</p>
           </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐⭐</div>
-            <p class="t-text">"Ik verwachtte niet veel, en toch viel het me een beetje tegen. Maar misschien was dat mijn eigen schuld. Dat zei hij ook, eigenlijk."</p>
-            <div class="t-author">
-              <div class="t-avatar">M</div>
-              <div class="t-info">
-                <strong>Mark V.</strong>
-                <span>Ondernemer, probeert het nog</span>
-              </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Old Fashioned</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 13</span>
             </div>
+            <p class="menu-item-desc">Bourbon Whiskey, Angostura Bitters, Zucker, Orange</p>
           </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐⭐⭐</div>
-            <p class="t-text">"Na 3 maanden coaching heb ik mijn verwachtingen bijgesteld. Dat was ook het doel, zei hij. Dus technisch gezien: succes."</p>
-            <div class="t-author">
-              <div class="t-avatar">S</div>
-              <div class="t-info">
-                <strong>Sandra R.</strong>
-                <span>Freelancer, realistisch nu</span>
-              </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Aperol Spritz</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 10</span>
             </div>
+            <p class="menu-item-desc">Aperol, Prosecco, Soda, Orange</p>
           </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐</div>
-            <p class="t-text">"De podcast is... lang. Soms te lang. Maar ik luister altijd terwijl ik de afwas doe, dus ik hoor het niet echt. 9/10."</p>
-            <div class="t-author">
-              <div class="t-avatar">T</div>
-              <div class="t-info">
-                <strong>Tom H.</strong>
-                <span>Luisteraar, multi-tasker</span>
-              </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Espresso Martini</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 14</span>
             </div>
+            <p class="menu-item-desc">Vodka, Kaffeelikör, frischer Espresso</p>
           </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐⭐</div>
-            <p class="t-text">"Mijn omzet is niet gestegen, maar ik voel me er beter over. Is dat niet eigenlijk hetzelfde? Nee, dat is het niet. Maar toch."</p>
-            <div class="t-author">
-              <div class="t-avatar">L</div>
-              <div class="t-info">
-                <strong>Lisa K.</strong>
-                <span>Coach (ook)</span>
-              </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Niederl Special</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 15</span>
             </div>
+            <p class="menu-item-desc">Hauskreation – fragen Sie Ihren Barkeeper</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Hugo</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 10</span>
+            </div>
+            <p class="menu-item-desc">Prosecco, Holunderblütensirup, Minze, Limette</p>
           </div>
         </div>
-        <div class="slider-controls">
-          <button class="slider-btn" id="slider-prev">←</button>
-          <div class="slider-dots" id="slider-dots"></div>
-          <button class="slider-btn" id="slider-next">→</button>
+      </div>
+
+      <div class="menu-content" id="tab-wine">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Grüner Veltliner</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 5,50</span>
+            </div>
+            <p class="menu-item-desc">Österreich, frisch und trocken · 0,2 l</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Blaufränkisch</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 6,50</span>
+            </div>
+            <p class="menu-item-desc">Burgenland, vollmundig und kräftig · 0,2 l</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Prosecco</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 6</span>
+            </div>
+            <p class="menu-item-desc">Italien, prickelnd und elegant · 0,1 l</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Champagner</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 14</span>
+            </div>
+            <p class="menu-item-desc">Frankreich, brut nature · 0,1 l</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Rosé</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 5,50</span>
+            </div>
+            <p class="menu-item-desc">Provence, trocken und frisch · 0,2 l</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Sauvignon Blanc</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 6</span>
+            </div>
+            <p class="menu-item-desc">Steiermark, aromatisch · 0,2 l</p>
+          </div>
         </div>
       </div>
+
+      <div class="menu-content" id="tab-spirits">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Single Malt Whisky</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">ab € 9</span>
+            </div>
+            <p class="menu-item-desc">Auswahl schottischer und irischer Destillerien</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Premium Gin</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">ab € 8</span>
+            </div>
+            <p class="menu-item-desc">Vielfältige Auswahl – pur oder mit Tonic Water</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Rum</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">ab € 7</span>
+            </div>
+            <p class="menu-item-desc">Karibische und kontinentale Destillate</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Obstbrand</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">ab € 6</span>
+            </div>
+            <p class="menu-item-desc">Regionale österreichische Brände</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-content" id="tab-nonalc">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Hausgemachte Limonade</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 5</span>
+            </div>
+            <p class="menu-item-desc">Täglich wechselnd – frisch und hausgemacht</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Virgin Mojito</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 7</span>
+            </div>
+            <p class="menu-item-desc">Minze, Limette, Zucker, Sodawasser</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Mineralwasser</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 3</span>
+            </div>
+            <p class="menu-item-desc">Still oder prickelnd · 0,33 l</p>
+          </div>
+          <div class="menu-item">
+            <div class="menu-item-header">
+              <span class="menu-item-name">Kaffee & Espresso</span>
+              <span class="menu-item-dots"></span>
+              <span class="menu-item-price">€ 3,50</span>
+            </div>
+            <p class="menu-item-desc">Auswahl an heißen Getränken</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="menu-note">* Alle Preise inkl. MwSt. Die Speisekarte kann saisonal variieren.</p>
     </div>
   </section>
 
-  <!-- BLOG -->
-  <section class="blog" id="blog">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Blog</div>
-        <h2 class="section-title">Artikelen die <span class="accent">misschien</span> helpen</h2>
-        <p class="section-sub">Geschreven op momenten dat ik er zin in had. Dat is niet zo vaak.</p>
-      </div>
-      <div class="blog-grid" id="blog-grid">
-        <!-- Blog posts rendered by JS -->
-      </div>
-      <div class="blog-load-more">
-        <a href="#" class="btn btn-ghost">Meer artikelen lezen (als je niets beters te doen hebt)</a>
-      </div>
+  <!-- DIVIDER -->
+  <div class="section-divider">
+    <div class="divider-content">
+      <span class="divider-line"></span>
+      <span class="divider-diamond">◆</span>
+      <span class="divider-line"></span>
     </div>
-  </section>
+  </div>
 
-  <!-- NIEUWSBRIEF -->
-  <section class="newsletter">
-    <div class="container newsletter-inner">
-      <div class="newsletter-text">
-        <div class="section-tag">Nieuwsbrief</div>
-        <h2>Elke week een mailtje<br/><span class="accent">dat je misschien leest</span></h2>
-        <p>Abonneer je op de Droefcaster nieuwsbrief. Je ontvangt onregelmatig updates, half-afgewerkte ideeën en soms een link naar een aflevering.</p>
-        <ul class="nl-benefits">
-          <li>📬 Onregelmatige verzending (we doen ons best)</li>
-          <li>💡 Tips die misschien relevant zijn</li>
-          <li>🔕 Uitschrijven kan altijd (we begrijpen het)</li>
-        </ul>
+  <!-- OPENING HOURS -->
+  <section class="opening" id="opening">
+    <div class="container opening-grid">
+      <div class="opening-text">
+        <div class="section-label">Öffnungszeiten</div>
+        <h2 class="section-title">Wir freuen uns<br/><em>auf Sie</em></h2>
+        <p>
+          Die Niederl Bar begrüßt Sie in gemütlicher Atmosphäre.
+          Reservierungen für Gruppen nehmen wir gerne telefonisch entgegen.
+        </p>
+        <a href="tel:06641635743" class="opening-phone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="phone-icon">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.1 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          0664 / 163 57 43
+        </a>
       </div>
-      <form class="newsletter-form" id="newsletter-form">
-        <div class="form-group">
-          <label for="nl-name">Je naam</label>
-          <input type="text" id="nl-name" placeholder="Voornaam (achternaam hoeft niet)" />
+      <div class="opening-hours">
+        <div class="hours-card">
+          <div class="hours-row">
+            <span class="hours-day">Montag</span>
+            <span class="hours-time">20:00 – 03:00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Dienstag</span>
+            <span class="hours-time">20:00 – 03:00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Mittwoch</span>
+            <span class="hours-time">20:00 – 03:00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Donnerstag</span>
+            <span class="hours-time">20:00 – 04:00</span>
+          </div>
+          <div class="hours-row hours-highlight">
+            <span class="hours-day">Freitag</span>
+            <span class="hours-time">20:00 – 05:00</span>
+          </div>
+          <div class="hours-row hours-highlight">
+            <span class="hours-day">Samstag</span>
+            <span class="hours-time">20:00 – 05:00</span>
+          </div>
+          <div class="hours-row">
+            <span class="hours-day">Sonntag</span>
+            <span class="hours-time">20:00 – 03:00</span>
+          </div>
+          <p class="hours-note">Öffnungszeiten können sich je nach Saison und Veranstaltungen ändern.</p>
         </div>
-        <div class="form-group">
-          <label for="nl-email">E-mailadres *</label>
-          <input type="email" id="nl-email" placeholder="jij@jouwdomein.nl" required />
-        </div>
-        <div class="form-check">
-          <input type="checkbox" id="nl-agree" required />
-          <label for="nl-agree">Ik ga akkoord met het ontvangen van teleurstellende e-mails</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Aanmelden (onherroepelijk)</button>
-        <p class="form-note">We sturen je geen spam. Alleen saaie inhoud.</p>
-        <div class="form-success" id="nl-success">
-          ✓ Je bent aangemeld! We doen er iets mee. Op termijn.
-        </div>
-      </form>
+      </div>
     </div>
   </section>
 
   <!-- CONTACT -->
   <section class="contact" id="contact">
-    <div class="container contact-grid">
-      <div class="contact-info">
-        <div class="section-tag">Contact</div>
-        <h2 class="section-title">Neem <span class="accent">eventueel</span> contact op</h2>
-        <p>Heb je een vraag? Een opmerking? Wil je gewoon je hart luchten? Vul het formulier in. Ik lees het echt, al duurt het even.</p>
-
-        <div class="contact-details">
-          <div class="contact-item">
-            <span class="contact-icon">📍</span>
-            <div>
-              <strong>Locatie</strong>
-              <p>Ergens in Nederland.<br/>Niet altijd beschikbaar.</p>
-            </div>
+    <div class="contact-bg"></div>
+    <div class="container contact-inner">
+      <div class="section-label">Kontakt</div>
+      <h2 class="section-title">Besuchen Sie uns</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
           </div>
-          <div class="contact-item">
-            <span class="contact-icon">📧</span>
-            <div>
-              <strong>E-mail</strong>
-              <p>hoi@droefcaster.nl<br/><em>(reactie binnen 3-21 werkdagen)</em></p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📞</span>
-            <div>
-              <strong>Telefoon</strong>
-              <p>Liever niet, eigenlijk.<br/>Bel alleen als het echt niet anders kan.</p>
-            </div>
-          </div>
+          <h3>Adresse</h3>
+          <p>Niederl Bar<br/>Schladming<br/>Steiermark, Österreich</p>
         </div>
-
-        <div class="social-links">
-          <a href="#" class="social-btn" title="LinkedIn">in</a>
-          <a href="#" class="social-btn" title="Instagram">📸</a>
-          <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
-          <a href="#" class="social-btn" title="YouTube">▶</a>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.1 11.5a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.64a16 16 0 006.29 6.29l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <h3>Telefon</h3>
+          <p><a href="tel:06641635743">0664 / 163 57 43</a></p>
+          <p class="contact-sub">Reservierungen &amp; Anfragen</p>
+        </div>
+        <div class="contact-card">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Öffnungszeiten</h3>
+          <p>Täglich ab 20:00 Uhr</p>
+          <p class="contact-sub">Fr &amp; Sa bis 05:00 Uhr</p>
         </div>
       </div>
-
-      <form class="contact-form" id="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="c-name">Naam *</label>
-            <input type="text" id="c-name" placeholder="Jouw naam" required />
-          </div>
-          <div class="form-group">
-            <label for="c-email">E-mail *</label>
-            <input type="email" id="c-email" placeholder="jij@voorbeeld.nl" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="c-subject">Onderwerp</label>
-          <select id="c-subject">
-            <option value="">Kies een onderwerp (verplicht noch vrijblijvend)</option>
-            <option value="coaching">Ik wil coaching (denk ik)</option>
-            <option value="podcast">Vraag over de podcast</option>
-            <option value="samenwerking">Samenwerking (misschien)</option>
-            <option value="klacht">Klacht (ook goed)</option>
-            <option value="anders">Anders (ik weet het ook niet)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="c-message">Bericht *</label>
-          <textarea id="c-message" rows="5" placeholder="Schrijf hier je verhaal. Neem de tijd. Ik lees het echt... uiteindelijk." required></textarea>
-        </div>
-        <div class="form-check">
-          <input type="checkbox" id="c-agree" required />
-          <label for="c-agree">Ik snap dat een reactie even kan duren en dat is okay</label>
-        </div>
-        <button type="submit" class="btn btn-primary btn-full">Versturen (onomkeerbaar)</button>
-        <div class="form-success" id="contact-success">
-          ✓ Bericht ontvangen. Ergens in de komende weken leest ik het.
-        </div>
-      </form>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
-      <div class="footer-brand">
-        <a href="#" class="nav-logo">
-          <span class="logo-icon">😔</span>
-          <span class="logo-text">Droef<span class="logo-accent">caster</span></span>
-        </a>
-        <p>Jouw gids door het moeras van het ondernemerschap. Eerlijk. Ongepolijst. Onregelmatig aanwezig.</p>
-        <div class="footer-social">
-          <a href="#" class="social-btn">in</a>
-          <a href="#" class="social-btn">📸</a>
-          <a href="#" class="social-btn">𝕏</a>
-          <a href="#" class="social-btn">▶</a>
-        </div>
+      <div class="footer-logo">
+        <span class="footer-script">Niederl Bar</span>
+        <p class="footer-location">SCHLADMING</p>
       </div>
-      <div class="footer-links">
-        <div class="footer-col">
-          <h4>Navigatie</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#over-mij">Over Mij</a></li>
-            <li><a href="#diensten">Diensten</a></li>
-            <li><a href="#podcast">Podcast</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Podcast Platforms</h4>
-          <ul>
-            <li><a href="#">🍎 Apple Podcasts</a></li>
-            <li><a href="#">🟢 Spotify</a></li>
-            <li><a href="#">📻 Google Podcasts</a></li>
-            <li><a href="#">📡 RSS Feed</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Legal (helaas)</h4>
-          <ul>
-            <li><a href="#">Privacybeleid</a></li>
-            <li><a href="#">Algemene Voorwaarden</a></li>
-            <li><a href="#">Cookie Instellingen</a></li>
-            <li><a href="#">Disclaimer (lees het niet)</a></li>
-          </ul>
-        </div>
+      <div class="footer-divider">
+        <span class="divider-line"></span>
+        <span class="divider-diamond">◆</span>
+        <span class="divider-line"></span>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="container">
-        <p>© 2024 Droefcaster. Alle rechten voorbehouden, hoewel niemand er echt op staat te wachten.</p>
-        <p class="footer-made">Gemaakt met <span>😶</span> en teveel koffie</p>
-      </div>
+      <nav class="footer-nav">
+        <a href="#home">Home</a>
+        <a href="#about">Über uns</a>
+        <a href="#menu">Getränke</a>
+        <a href="#opening">Öffnungszeiten</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+      <p class="footer-copy">© 2024 Niederl Bar Schladming · Tel. 0664/1635743</p>
     </div>
   </footer>
 
   <!-- BACK TO TOP -->
-  <button class="back-to-top" id="back-to-top" title="Terug naar boven">↑</button>
+  <button class="back-to-top" id="back-to-top" title="Nach oben">↑</button>
 
   <script src="script.js"></script>
 </body>
