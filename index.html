@@ -3,492 +3,417 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Droefcaster – Jouw gids door het moeras</title>
+  <title>De Kock Raam en Deurtechniek | Courage B.V. – Elsloo, Limburg</title>
+  <meta name="description" content="De Kock Raam en Deurtechniek – uw specialist in garagedeuren, kozijnen, rolluiken, zonwering en automatisering. Al ruim 20 jaar vertrouwd in Limburg." />
   <link rel="stylesheet" href="styles.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- COOKIE BANNER -->
-  <div id="cookie-banner" class="cookie-banner">
-    <p>Wij gebruiken cookies. Je hebt toch al geen keus meer in het leven. <button id="cookie-accept">Oké, ik geef het op</button></p>
-  </div>
-
-  <!-- STICKY AUDIO PLAYER -->
-  <div class="sticky-player" id="sticky-player">
-    <div class="player-inner">
-      <div class="player-info">
-        <div class="player-thumb">🎙️</div>
-        <div class="player-meta">
-          <span class="player-title">Afl. 47: "Dingen die toch niet uitkomen"</span>
-          <span class="player-show">Droefcaster Podcast</span>
-        </div>
-      </div>
-      <div class="player-controls">
-        <button class="player-btn" id="prev-btn" title="Vorige">⏮</button>
-        <button class="player-btn play-btn" id="play-btn" title="Spelen/Pauzeren">▶</button>
-        <button class="player-btn" id="next-btn" title="Volgende">⏭</button>
-      </div>
-      <div class="player-progress-wrap">
-        <span class="time-current" id="time-current">00:00</span>
-        <div class="player-progress" id="player-progress">
-          <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <span class="time-total">47:23</span>
-      </div>
-      <div class="player-extra">
-        <select class="speed-select" id="speed-select">
-          <option value="0.5">0.5x (depressief)</option>
-          <option value="0.75">0.75x (traag)</option>
-          <option value="1" selected>1x (normaal triest)</option>
-          <option value="1.25">1.25x (enigszins haastig verdrietig)</option>
-        </select>
-        <button class="player-btn" id="mute-btn" title="Dempen">🔈</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- NAVIGATION -->
-  <nav class="navbar" id="navbar">
-    <div class="nav-container">
-      <a href="#" class="nav-logo">
-        <span class="logo-icon">😔</span>
-        <span class="logo-text">Droef<span class="logo-accent">caster</span></span>
+  <!-- HEADER / NAV -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">
+        <span class="logo-main">De Kock</span>
+        <span class="logo-sub">Raam en Deurtechniek</span>
       </a>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+      <nav class="nav" id="nav">
+        <ul class="nav-list">
+          <li><a href="#diensten">Diensten</a></li>
+          <li><a href="#producten">Producten</a></li>
+          <li><a href="#over">Over ons</a></li>
+          <li><a href="#reviews">Beoordelingen</a></li>
+          <li><a href="#contact" class="btn btn-nav">Contact</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu openen">
         <span></span><span></span><span></span>
       </button>
-      <ul class="nav-links" id="nav-links">
-        <li><a href="#home" class="nav-link">Home</a></li>
-        <li><a href="#over-mij" class="nav-link">Over Mij (een beetje)</a></li>
-        <li><a href="#diensten" class="nav-link">Diensten (soort van)</a></li>
-        <li><a href="#podcast" class="nav-link">Podcast</a></li>
-        <li><a href="#blog" class="nav-link">Blog (soms)</a></li>
-        <li><a href="#contact" class="nav-link">Contact (probeer maar)</a></li>
-        <li><a href="#" class="nav-cta">Gratis Intake</a></li>
-      </ul>
     </div>
-  </nav>
+  </header>
 
   <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="hero-bg-shapes">
-      <div class="shape shape-1"></div>
-      <div class="shape shape-2"></div>
-      <div class="shape shape-3"></div>
-    </div>
+  <section class="hero">
+    <div class="hero-bg"></div>
     <div class="container hero-content">
-      <div class="hero-badge">🌧️ #1 Meest Gemiddelde Business Coach van Nederland</div>
-      <h1 class="hero-title">
-        Laat je business<br/>
-        <span class="hero-accent">langzaam</span><br/>
-        achteruitgaan.
-      </h1>
-      <p class="hero-sub">
-        Welkom bij Droefcaster. Ik help ondernemers zoals jij om realistic expectations te hebben,
-        doelen te formuleren die misschien iets te hoog gegrepen zijn, en uiteindelijk toch maar
-        gewoon te accepteren dat het is zoals het is.
-      </p>
-      <div class="hero-cta-group">
-        <a href="#diensten" class="btn btn-primary">Begin met opgeven →</a>
-        <a href="#podcast" class="btn btn-ghost">Luister de droefste podcast</a>
+      <p class="hero-label">Specialist in Limburg – ruim 20 jaar ervaring</p>
+      <h1>Kwaliteit bij raam,<br>deur en gevel</h1>
+      <p class="hero-desc">Van garagedeuren en industriedeuren tot aluminium kozijnen, rolluiken en zonwering. Courage B.V. De Kock Raam en Deurtechniek levert maatwerk voor particulieren en zakelijke klanten.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Vrijblijvend offerte</a>
+        <a href="#producten" class="btn btn-outline">Bekijk producten</a>
       </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num">3</span>
-          <span class="stat-label">tevreden klanten (van de 847)</span>
+      <div class="hero-badges">
+        <div class="badge">
+          <span class="badge-value">8,7</span>
+          <span class="badge-label">Trustoo score</span>
         </div>
-        <div class="stat">
-          <span class="stat-num">47</span>
-          <span class="stat-label">afleveringen (meeste maar half af)</span>
+        <div class="badge">
+          <span class="badge-value">20+</span>
+          <span class="badge-label">Jaar ervaring</span>
         </div>
-        <div class="stat">
-          <span class="stat-num">0,5★</span>
-          <span class="stat-label">gemiddelde beoordeling</span>
+        <div class="badge">
+          <span class="badge-value">100%</span>
+          <span class="badge-label">Maatwerk</span>
         </div>
       </div>
-    </div>
-    <div class="hero-scroll-hint">
-      <span>Scroll maar, je hebt toch niets beters te doen</span>
-      <div class="scroll-arrow">↓</div>
     </div>
   </section>
 
-  <!-- OVER MIJ -->
-  <section class="about" id="over-mij">
-    <div class="container about-grid">
-      <div class="about-image-wrap">
-        <div class="about-photo">
-          <div class="photo-placeholder">
-            <span class="photo-emoji">😐</span>
-            <p>Dit had een professionele foto kunnen zijn</p>
-          </div>
-        </div>
-        <div class="about-badge-float">
-          <span>12 jaar ervaring<br/>(voelt langer)</span>
+  <!-- USP STRIP -->
+  <section class="usp-strip">
+    <div class="container usp-grid">
+      <div class="usp-item">
+        <div class="usp-icon">&#10003;</div>
+        <div>
+          <strong>Vakkundig advies</strong>
+          <p>Persoonlijk advies op maat voor uw situatie</p>
         </div>
       </div>
-      <div class="about-text">
-        <div class="section-tag">Over Mij</div>
-        <h2 class="section-title">Hoi, ik ben <span class="accent">Jurremand</span><br/>Business Coach</h2>
-        <p class="about-lead">
-          Ik geloof dat iedere ondernemer het potentieel heeft om... tja, gewoon te overleven eigenlijk. Dat is al heel wat.
-        </p>
-        <p>
-          Na jaren in het bedrijfsleven — waarin ik zelf ook regelmatig volledig verkeerde keuzes heb gemaakt —
-          heb ik geleerd dat succes relatief is. Heel erg relatief. En dat is okay.
-          Mijn missie? Jou helpen om ook okay te zijn met okay zijn.
-        </p>
-        <p>
-          Ik ben opgeleid als coach, ondernemer en iemand die te lang naar motiverende quotes heeft gekeken
-          totdat het niet meer werkte. Nu deel ik die wijsheid met jou.
-        </p>
-        <div class="about-skills">
-          <div class="skill-item">
-            <span class="skill-icon">📉</span>
-            <span>Groeistagnatie begeleiding</span>
-          </div>
-          <div class="skill-item">
-            <span class="skill-icon">😪</span>
-            <span>Burnout preventie (door verwachtingen te verlagen)</span>
-          </div>
-          <div class="skill-item">
-            <span class="skill-icon">🌫️</span>
-            <span>Strategisch onduidelijk plannen</span>
-          </div>
-          <div class="skill-item">
-            <span class="skill-icon">🎙️</span>
-            <span>Podcasting (matig beluisterd)</span>
-          </div>
+      <div class="usp-item">
+        <div class="usp-icon">&#10003;</div>
+        <div>
+          <strong>Particulier &amp; zakelijk</strong>
+          <p>Oplossingen voor elke klant in Limburg</p>
         </div>
-        <a href="#contact" class="btn btn-primary">Plan een gesprek (als je wilt)</a>
+      </div>
+      <div class="usp-item">
+        <div class="usp-icon">&#10003;</div>
+        <div>
+          <strong>Beste merken</strong>
+          <p>Uitsluitend producten van topkwaliteit</p>
+        </div>
+      </div>
+      <div class="usp-item">
+        <div class="usp-icon">&#10003;</div>
+        <div>
+          <strong>Afspraken nakomen</strong>
+          <p>Betrouwbaar, netjes en op tijd</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTEN -->
+  <section class="section" id="producten">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Wat wij leveren</p>
+        <h2>Onze producten</h2>
+        <p class="section-desc">Wij bieden een compleet pakket voor uw woning of bedrijfspand, inclusief professionele montage en automatisering.</p>
+      </div>
+      <div class="products-grid">
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#128663;</div>
+          <h3>Garagedeuren</h3>
+          <p>Kanteldeuren, sectionaaldeuren en kantelsectionaaldeuren in diverse uitvoeringen. Met of zonder automatisering.</p>
+          <ul>
+            <li>Sectionaaldeuren</li>
+            <li>Kanteldeuren</li>
+            <li>Automatische openers</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#127981;</div>
+          <h3>Industriedeuren</h3>
+          <p>Robuuste deuren voor bedrijfshallen, magazijnen en industriële omgevingen. Veilig, duurzaam en energiezuinig.</p>
+          <ul>
+            <li>Snelloopdeuren</li>
+            <li>Vouwdeuren</li>
+            <li>Staalplaat deuren</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#129695;</div>
+          <h3>Aluminium kozijnen &amp; deuren</h3>
+          <p>Slanke, stijlvolle aluminium kozijnen en deuren. Energiezuinig, onderhoudsvriendelijk en in elke kleur leverbaar.</p>
+          <ul>
+            <li>Schuifpuien</li>
+            <li>Voordeur systemen</li>
+            <li>Nieuwbouw &amp; renovatie</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#9638;</div>
+          <h3>Kunststof kozijnen</h3>
+          <p>Hoogwaardige kunststof kozijnen met uitstekende isolatiewaarden. Duurzaam en vrijwel onderhoudsloos.</p>
+          <ul>
+            <li>HR++ beglazing</li>
+            <li>Triple glas mogelijk</li>
+            <li>Diverse profielsystemen</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#128737;</div>
+          <h3>Rolluiken</h3>
+          <p>Inbraakwerend, isolerend en verduisterend. Rolluiken voor woning en bedrijf, handmatig of elektrisch.</p>
+          <ul>
+            <li>Opbouw &amp; inbouw</li>
+            <li>Elektrische bediening</li>
+            <li>Insectenwering</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#9728;</div>
+          <h3>Zonwering</h3>
+          <p>Markiezen, screens en zonneschermen voor optimaal comfort binnenshuis. Inclusief montage en onderhoud.</p>
+          <ul>
+            <li>Uitvalmarkiezen</li>
+            <li>Screens &amp; cassettes</li>
+            <li>Motorisering</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#129421;</div>
+          <h3>Horren &amp; insectenwering</h3>
+          <p>Geef insecten geen kans. Wij leveren en monteren horren op maat voor ramen, deuren en schuifpuien.</p>
+          <ul>
+            <li>Schuifhorren</li>
+            <li>Plisséhorren</li>
+            <li>Deurhorren</li>
+          </ul>
+        </div>
+
+        <div class="product-card">
+          <div class="product-icon" aria-hidden="true">&#9881;</div>
+          <h3>Automatisering</h3>
+          <p>Maak uw deur of raam slim. Wij verzorgen de automatisering van garagedeuren, rolluiken, zonwering en meer.</p>
+          <ul>
+            <li>Afstandsbediening</li>
+            <li>Smartphone bediening</li>
+            <li>Domotica koppeling</li>
+          </ul>
+        </div>
+
       </div>
     </div>
   </section>
 
   <!-- DIENSTEN -->
-  <section class="services" id="diensten">
+  <section class="section section-alt" id="diensten">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">Diensten</div>
-        <h2 class="section-title">Wat ik <span class="accent">zogenaamd</span> doe</h2>
-        <p class="section-sub">Kies het pakket dat het minst slecht bij jou past. Ze zijn allemaal ongeveer hetzelfde.</p>
+        <p class="section-label">Wat wij voor u doen</p>
+        <h2>Onze diensten</h2>
+        <p class="section-desc">Van advies en levering tot montage, afwerking en onderhoud – wij ontzorgen u volledig.</p>
       </div>
       <div class="services-grid">
+
         <div class="service-card">
-          <div class="service-icon">🐌</div>
-          <h3>Strategisch Stagneren</h3>
-          <p>Een uitgebreid traject waarbij we samen kijken waarom je business niet groeit en vervolgens accepteren dat dat misschien gewoon zo is.</p>
-          <ul class="service-list">
-            <li>✓ 4 sessies van 60 min (waarvan 20 min koffiezetten)</li>
-            <li>✓ Persoonlijk inzicht (dat je al had)</li>
-            <li>✓ Roadmap die je nooit gebruikt</li>
-            <li>✓ E-mailsupport (antwoord binnen 3-7 werkdagen)</li>
-          </ul>
-          <div class="service-price">€ 997 <span>(was ook al niet veel waard)</span></div>
-          <a href="#contact" class="btn btn-service">Ik doe maar mee</a>
+          <div class="service-num">01</div>
+          <h3>Plaatsing nieuwbouw</h3>
+          <p>Wij werken samen met aannemers en projectontwikkelaars voor de volledige kozijn- en deurmontage in nieuwbouwprojecten.</p>
         </div>
-        <div class="service-card service-featured">
-          <div class="service-badge">Meest gekozen (door 2 mensen)</div>
-          <div class="service-icon">😶</div>
-          <h3>Het Middelmatige Traject</h3>
-          <p>Het volledige pakket. We werken samen aan jouw business totdat één van ons het opgeeft. Gemiddeld duurt dat 3 maanden.</p>
-          <ul class="service-list">
-            <li>✓ 10 sessies (8 gegarandeerd)</li>
-            <li>✓ Onbeperkte WhatsApp (ik lees het echt)</li>
-            <li>✓ Business scan (niet zo diepgaand als het klinkt)</li>
-            <li>✓ Certificaat van deelname (ongelamineerd)</li>
-            <li>✓ Toegang tot mijn podcast (gratis toch al)</li>
-          </ul>
-          <div class="service-price">€ 2.497 <span>(betaal gerust in termijnen, ik vergeet het)</span></div>
-          <a href="#contact" class="btn btn-primary">Vooruit dan maar</a>
-        </div>
+
         <div class="service-card">
-          <div class="service-icon">🎤</div>
-          <h3>Podcast Coaching</h3>
-          <p>Ik leer jou hoe je een podcast start. Of je ook luisteraars krijgt, dat is een ander verhaal. Maar starten, dat lukt wel.</p>
-          <ul class="service-list">
-            <li>✓ Technische setup (grotendeels)</li>
-            <li>✓ Format ontwikkeling (vaag)</li>
-            <li>✓ 1 opnamesessie samen</li>
-            <li>✓ Distributie advies (zet het op Spotify)</li>
-          </ul>
-          <div class="service-price">€ 497 <span>(je kan het ook gewoon zelf googlen)</span></div>
-          <a href="#contact" class="btn btn-service">Waarom ook niet</a>
+          <div class="service-num">02</div>
+          <h3>Renovatie &amp; vervanging</h3>
+          <p>Oude kozijnen vervangen door nieuwe? Wij verwijderen de oude situatie en plaatsen de nieuwe kozijnen inclusief nette afwerking.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <h3>Herstel &amp; reparatie</h3>
+          <p>Beschadigde of slecht sluitende kozijnen, deuren of rolluiken? Onze monteurs lossen het snel en vakkundig op.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">04</div>
+          <h3>Onderhoud zonwering</h3>
+          <p>Wij verzorgen periodiek onderhoud, reiniging, demontage en herplaatsing van uw zonwering, zodat deze altijd optimaal functioneert.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">05</div>
+          <h3>Afwerking</h3>
+          <p>Na montage zorgen wij voor een nette afwerking: schilderen, kitten en finishen zodat het resultaat er perfect uitziet.</p>
+        </div>
+
+        <div class="service-card">
+          <div class="service-num">06</div>
+          <h3>Zakelijke projecten</h3>
+          <p>Voor bedrijven, utiliteit en industrie leveren wij op maat gemaakte oplossingen voor garagedeuren, industriedeuren en gevels.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- OVER ONS -->
+  <section class="section" id="over">
+    <div class="container over-grid">
+      <div class="over-content">
+        <p class="section-label">Wie zijn wij</p>
+        <h2>Al meer dan 20 jaar uw specialist in Limburg</h2>
+        <p>Courage B.V. De Kock Raam en Deurtechniek is al ruim twintig jaar het vertrouwde adres in Limburg voor klanten in de particuliere en zakelijke sector. Wij zijn gevestigd op Business Park Stein in Elsloo en bedienen de gehele regio.</p>
+        <p>Als Normstahl Center Limburg leveren wij uitsluitend producten van de beste merken. Kwaliteit, betrouwbaarheid en klanttevredenheid staan bij ons centraal. Onze medewerkers zijn vakbekwaam, klantvriendelijk en werken netjes.</p>
+        <div class="over-stats">
+          <div class="stat">
+            <span class="stat-value">20+</span>
+            <span class="stat-label">Jaar actief</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">8,7</span>
+            <span class="stat-label">Klantbeoordeling</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">Top 10</span>
+            <span class="stat-label">Kozijnspecialisten Elsloo</span>
+          </div>
+        </div>
+        <a href="#contact" class="btn btn-primary">Neem contact op</a>
+      </div>
+      <div class="over-visual">
+        <div class="over-card-stack">
+          <div class="over-card">
+            <div class="over-card-icon" aria-hidden="true">&#127942;</div>
+            <h4>Normstahl Center Limburg</h4>
+            <p>Officieel dealer van Normstahl garagedeuren en automatisering</p>
+          </div>
+          <div class="over-card">
+            <div class="over-card-icon" aria-hidden="true">&#128205;</div>
+            <h4>Regio Limburg</h4>
+            <p>Gevestigd in Elsloo, werkzaam in de gehele regio Zuid-Limburg en omgeving</p>
+          </div>
+          <div class="over-card">
+            <div class="over-card-icon" aria-hidden="true">&#129309;</div>
+            <h4>Particulier &amp; zakelijk</h4>
+            <p>Oplossingen voor woningen, bedrijfspanden en industriële omgevingen</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PODCAST -->
-  <section class="podcast" id="podcast">
+  <!-- REVIEWS -->
+  <section class="section section-alt" id="reviews">
     <div class="container">
       <div class="section-header">
-        <div class="section-tag">Podcast</div>
-        <h2 class="section-title">De <span class="accent">Droefcaster</span> Podcast</h2>
-        <p class="section-sub">Wekelijks een nieuwe aflevering. Soms om de twee weken. Soms langer. We doen ons best.</p>
+        <p class="section-label">Wat klanten zeggen</p>
+        <h2>Beoordelingen</h2>
+        <p class="section-desc">Met een Trustoo-score van 8,7 staan wij in de Top 10 beste kozijnenspecialisten van Elsloo en omstreken.</p>
       </div>
-
-      <!-- FEATURED EPISODE -->
-      <div class="featured-episode">
-        <div class="ep-cover">
-          <span class="ep-number">Afl. 47</span>
-          <span class="ep-emoji">🌧️</span>
-        </div>
-        <div class="ep-info">
-          <div class="ep-meta">Meest recente aflevering · 47 min · Vorige week (dacht ik)</div>
-          <h3 class="ep-title">"Dingen die toch niet uitkomen" – Een eerlijk gesprek over verwachtingen</h3>
-          <p class="ep-desc">
-            In deze aflevering praat ik met niemand want mijn gast heeft afgezegd.
-            Dus vertel ik gewoon 47 minuten lang mijn eigen gedachten. Het werd eigenlijk best okay.
-            Misschien. Oordeel zelf.
-          </p>
-          <div class="ep-cta-row">
-            <button class="btn btn-play" id="ep-play-btn">▶ Speel af</button>
-            <a href="#" class="ep-platform">🍎 Apple Podcasts</a>
-            <a href="#" class="ep-platform">🟢 Spotify</a>
-            <a href="#" class="ep-platform">📻 Google Podcasts</a>
-          </div>
+      <div class="reviews-score-bar">
+        <div class="score-big">8,7</div>
+        <div class="score-info">
+          <div class="score-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>Gebaseerd op klantbeoordelingen via Trustoo</p>
+          <p><strong>Top 10</strong> kozijnenspecialisten in Elsloo (LI)</p>
         </div>
       </div>
-
-      <!-- EPISODE LIST -->
-      <div class="episode-list">
-        <h3 class="ep-list-title">Alle afleveringen <span class="ep-filter-note">(sorteer op: minst goed naar nog minder goed)</span></h3>
-
-        <div class="episodes-filter">
-          <button class="filter-btn active" data-filter="all">Alles</button>
-          <button class="filter-btn" data-filter="business">Business (soort van)</button>
-          <button class="filter-btn" data-filter="mindset">Mindset (neerwaarts)</button>
-          <button class="filter-btn" data-filter="interview">Interviews (die wel doorgingen)</button>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"Vakkundig advies, nette afwerking en alles werd precies zoals afgesproken uitgevoerd. Erg tevreden!"</p>
+          <span class="review-author">— Particuliere klant, Elsloo</span>
         </div>
-
-        <div class="episodes" id="episodes-container">
-          <!-- Episodes rendered by JS -->
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>"Onze garagedeur werd snel en professioneel geplaatst. De medewerkers waren vriendelijk en werken netjes."</p>
+          <span class="review-author">— Klant uit Stein</span>
         </div>
-
-        <div class="ep-load-more">
-          <button class="btn btn-ghost" id="load-more-btn">Laad meer teleurstellingen</button>
+        <div class="review-card">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+          <p>"Goed bedrijf met kennis van zaken. Kozijnen vervangen en zonwering geplaatst, alles naar volle tevredenheid."</p>
+          <span class="review-author">— Zakelijke klant, Limburg</span>
         </div>
       </div>
-
-      <!-- SUBSCRIBE SECTION -->
-      <div class="subscribe-bar">
-        <h3>Abonneer je op Droefcaster</h3>
-        <p>Ontvang elke nieuwe aflevering direct in je feed. Of niet, als je dat liever hebt.</p>
-        <div class="platform-buttons">
-          <a href="#" class="platform-btn">🍎 Apple Podcasts</a>
-          <a href="#" class="platform-btn">🟢 Spotify</a>
-          <a href="#" class="platform-btn">📻 Google</a>
-          <a href="#" class="platform-btn">📡 RSS Feed</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testimonials" id="testimonials">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Ervaringen</div>
-        <h2 class="section-title">Wat klanten <span class="accent">eigenlijk</span> zeggen</h2>
-        <p class="section-sub">Onbewerkte, échte feedback. We hebben niets mooier gemaakt dan het was.</p>
-      </div>
-      <div class="testimonials-slider" id="testimonials-slider">
-        <div class="testimonials-track" id="testimonials-track">
-          <div class="testimonial-card">
-            <div class="t-stars">⭐</div>
-            <p class="t-text">"Het was... een ervaring. Ik heb dingen geleerd. Of ik er iets mee doe, dat zie ik nog wel. Maar de koffie was goed."</p>
-            <div class="t-author">
-              <div class="t-avatar">K</div>
-              <div class="t-info">
-                <strong>Karen B.</strong>
-                <span>ZZP'er, onzeker over alles</span>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐⭐</div>
-            <p class="t-text">"Ik verwachtte niet veel, en toch viel het me een beetje tegen. Maar misschien was dat mijn eigen schuld. Dat zei hij ook, eigenlijk."</p>
-            <div class="t-author">
-              <div class="t-avatar">M</div>
-              <div class="t-info">
-                <strong>Mark V.</strong>
-                <span>Ondernemer, probeert het nog</span>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐⭐⭐</div>
-            <p class="t-text">"Na 3 maanden coaching heb ik mijn verwachtingen bijgesteld. Dat was ook het doel, zei hij. Dus technisch gezien: succes."</p>
-            <div class="t-author">
-              <div class="t-avatar">S</div>
-              <div class="t-info">
-                <strong>Sandra R.</strong>
-                <span>Freelancer, realistisch nu</span>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐</div>
-            <p class="t-text">"De podcast is... lang. Soms te lang. Maar ik luister altijd terwijl ik de afwas doe, dus ik hoor het niet echt. 9/10."</p>
-            <div class="t-author">
-              <div class="t-avatar">T</div>
-              <div class="t-info">
-                <strong>Tom H.</strong>
-                <span>Luisteraar, multi-tasker</span>
-              </div>
-            </div>
-          </div>
-          <div class="testimonial-card">
-            <div class="t-stars">⭐⭐</div>
-            <p class="t-text">"Mijn omzet is niet gestegen, maar ik voel me er beter over. Is dat niet eigenlijk hetzelfde? Nee, dat is het niet. Maar toch."</p>
-            <div class="t-author">
-              <div class="t-avatar">L</div>
-              <div class="t-info">
-                <strong>Lisa K.</strong>
-                <span>Coach (ook)</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="slider-controls">
-          <button class="slider-btn" id="slider-prev">←</button>
-          <div class="slider-dots" id="slider-dots"></div>
-          <button class="slider-btn" id="slider-next">→</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BLOG -->
-  <section class="blog" id="blog">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-tag">Blog</div>
-        <h2 class="section-title">Artikelen die <span class="accent">misschien</span> helpen</h2>
-        <p class="section-sub">Geschreven op momenten dat ik er zin in had. Dat is niet zo vaak.</p>
-      </div>
-      <div class="blog-grid" id="blog-grid">
-        <!-- Blog posts rendered by JS -->
-      </div>
-      <div class="blog-load-more">
-        <a href="#" class="btn btn-ghost">Meer artikelen lezen (als je niets beters te doen hebt)</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- NIEUWSBRIEF -->
-  <section class="newsletter">
-    <div class="container newsletter-inner">
-      <div class="newsletter-text">
-        <div class="section-tag">Nieuwsbrief</div>
-        <h2>Elke week een mailtje<br/><span class="accent">dat je misschien leest</span></h2>
-        <p>Abonneer je op de Droefcaster nieuwsbrief. Je ontvangt onregelmatig updates, half-afgewerkte ideeën en soms een link naar een aflevering.</p>
-        <ul class="nl-benefits">
-          <li>📬 Onregelmatige verzending (we doen ons best)</li>
-          <li>💡 Tips die misschien relevant zijn</li>
-          <li>🔕 Uitschrijven kan altijd (we begrijpen het)</li>
-        </ul>
-      </div>
-      <form class="newsletter-form" id="newsletter-form">
-        <div class="form-group">
-          <label for="nl-name">Je naam</label>
-          <input type="text" id="nl-name" placeholder="Voornaam (achternaam hoeft niet)" />
-        </div>
-        <div class="form-group">
-          <label for="nl-email">E-mailadres *</label>
-          <input type="email" id="nl-email" placeholder="jij@jouwdomein.nl" required />
-        </div>
-        <div class="form-check">
-          <input type="checkbox" id="nl-agree" required />
-          <label for="nl-agree">Ik ga akkoord met het ontvangen van teleurstellende e-mails</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Aanmelden (onherroepelijk)</button>
-        <p class="form-note">We sturen je geen spam. Alleen saaie inhoud.</p>
-        <div class="form-success" id="nl-success">
-          ✓ Je bent aangemeld! We doen er iets mee. Op termijn.
-        </div>
-      </form>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section class="contact" id="contact">
-    <div class="container contact-grid">
-      <div class="contact-info">
-        <div class="section-tag">Contact</div>
-        <h2 class="section-title">Neem <span class="accent">eventueel</span> contact op</h2>
-        <p>Heb je een vraag? Een opmerking? Wil je gewoon je hart luchten? Vul het formulier in. Ik lees het echt, al duurt het even.</p>
-
-        <div class="contact-details">
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Kom in contact</p>
+        <h2>Vraag een offerte aan</h2>
+        <p class="section-desc">Bel, mail of stuur een bericht. Wij reageren snel en geven vrijblijvend advies.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
           <div class="contact-item">
-            <span class="contact-icon">📍</span>
-            <div>
-              <strong>Locatie</strong>
-              <p>Ergens in Nederland.<br/>Niet altijd beschikbaar.</p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📧</span>
-            <div>
-              <strong>E-mail</strong>
-              <p>hoi@droefcaster.nl<br/><em>(reactie binnen 3-21 werkdagen)</em></p>
-            </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📞</span>
+            <div class="contact-icon" aria-hidden="true">&#128222;</div>
             <div>
               <strong>Telefoon</strong>
-              <p>Liever niet, eigenlijk.<br/>Bel alleen als het echt niet anders kan.</p>
+              <a href="tel:0464334131">046 433 4131</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">&#9993;</div>
+            <div>
+              <strong>E-mail</strong>
+              <a href="mailto:info@couragebv.nl">info@couragebv.nl</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">&#127758;</div>
+            <div>
+              <strong>Website</strong>
+              <a href="https://www.couragebv.nl" target="_blank" rel="noopener">www.couragebv.nl</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">&#128205;</div>
+            <div>
+              <strong>Adres</strong>
+              <address>Business Park Stein 210<br>6181 MB Elsloo<br>Nederland</address>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">&#127962;</div>
+            <div>
+              <strong>KvK</strong>
+              <span>14100339</span>
             </div>
           </div>
         </div>
 
-        <div class="social-links">
-          <a href="#" class="social-btn" title="LinkedIn">in</a>
-          <a href="#" class="social-btn" title="Instagram">📸</a>
-          <a href="#" class="social-btn" title="Twitter/X">𝕏</a>
-          <a href="#" class="social-btn" title="YouTube">▶</a>
-        </div>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="naam">Naam *</label>
+              <input type="text" id="naam" name="naam" placeholder="Uw naam" required />
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail *</label>
+              <input type="email" id="email" name="email" placeholder="uw@email.nl" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="telefoon">Telefoonnummer</label>
+            <input type="tel" id="telefoon" name="telefoon" placeholder="06 – ..." />
+          </div>
+          <div class="form-group">
+            <label for="onderwerp">Onderwerp *</label>
+            <select id="onderwerp" name="onderwerp" required>
+              <option value="">Kies een onderwerp</option>
+              <option value="garagedeur">Garagedeur</option>
+              <option value="industriedeur">Industriedeur</option>
+              <option value="kozijnen">Kozijnen (aluminium/kunststof)</option>
+              <option value="rolluiken">Rolluiken</option>
+              <option value="zonwering">Zonwering</option>
+              <option value="horren">Horren &amp; insectenwering</option>
+              <option value="automatisering">Automatisering</option>
+              <option value="onderhoud">Onderhoud / reparatie</option>
+              <option value="anders">Anders</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bericht">Uw bericht *</label>
+            <textarea id="bericht" name="bericht" rows="5" placeholder="Beschrijf uw situatie of vraag..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Verstuur bericht</button>
+          <div class="form-success" id="form-success" aria-live="polite"></div>
+        </form>
       </div>
-
-      <form class="contact-form" id="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="c-name">Naam *</label>
-            <input type="text" id="c-name" placeholder="Jouw naam" required />
-          </div>
-          <div class="form-group">
-            <label for="c-email">E-mail *</label>
-            <input type="email" id="c-email" placeholder="jij@voorbeeld.nl" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="c-subject">Onderwerp</label>
-          <select id="c-subject">
-            <option value="">Kies een onderwerp (verplicht noch vrijblijvend)</option>
-            <option value="coaching">Ik wil coaching (denk ik)</option>
-            <option value="podcast">Vraag over de podcast</option>
-            <option value="samenwerking">Samenwerking (misschien)</option>
-            <option value="klacht">Klacht (ook goed)</option>
-            <option value="anders">Anders (ik weet het ook niet)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="c-message">Bericht *</label>
-          <textarea id="c-message" rows="5" placeholder="Schrijf hier je verhaal. Neem de tijd. Ik lees het echt... uiteindelijk." required></textarea>
-        </div>
-        <div class="form-check">
-          <input type="checkbox" id="c-agree" required />
-          <label for="c-agree">Ik snap dat een reactie even kan duren en dat is okay</label>
-        </div>
-        <button type="submit" class="btn btn-primary btn-full">Versturen (onomkeerbaar)</button>
-        <div class="form-success" id="contact-success">
-          ✓ Bericht ontvangen. Ergens in de komende weken leest ik het.
-        </div>
-      </form>
     </div>
   </section>
 
@@ -496,60 +421,44 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <a href="#" class="nav-logo">
-          <span class="logo-icon">😔</span>
-          <span class="logo-text">Droef<span class="logo-accent">caster</span></span>
-        </a>
-        <p>Jouw gids door het moeras van het ondernemerschap. Eerlijk. Ongepolijst. Onregelmatig aanwezig.</p>
-        <div class="footer-social">
-          <a href="#" class="social-btn">in</a>
-          <a href="#" class="social-btn">📸</a>
-          <a href="#" class="social-btn">𝕏</a>
-          <a href="#" class="social-btn">▶</a>
-        </div>
+        <span class="logo-main">De Kock</span>
+        <span class="logo-sub">Raam en Deurtechniek</span>
+        <p>Courage B.V. – uw specialist in garagedeuren, kozijnen, rolluiken en zonwering in Limburg.</p>
       </div>
       <div class="footer-links">
-        <div class="footer-col">
-          <h4>Navigatie</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#over-mij">Over Mij</a></li>
-            <li><a href="#diensten">Diensten</a></li>
-            <li><a href="#podcast">Podcast</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Podcast Platforms</h4>
-          <ul>
-            <li><a href="#">🍎 Apple Podcasts</a></li>
-            <li><a href="#">🟢 Spotify</a></li>
-            <li><a href="#">📻 Google Podcasts</a></li>
-            <li><a href="#">📡 RSS Feed</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Legal (helaas)</h4>
-          <ul>
-            <li><a href="#">Privacybeleid</a></li>
-            <li><a href="#">Algemene Voorwaarden</a></li>
-            <li><a href="#">Cookie Instellingen</a></li>
-            <li><a href="#">Disclaimer (lees het niet)</a></li>
-          </ul>
-        </div>
+        <h4>Producten</h4>
+        <ul>
+          <li><a href="#producten">Garagedeuren</a></li>
+          <li><a href="#producten">Industriedeuren</a></li>
+          <li><a href="#producten">Aluminium kozijnen</a></li>
+          <li><a href="#producten">Kunststof kozijnen</a></li>
+          <li><a href="#producten">Rolluiken</a></li>
+          <li><a href="#producten">Zonwering</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Diensten</h4>
+        <ul>
+          <li><a href="#diensten">Nieuwbouw plaatsing</a></li>
+          <li><a href="#diensten">Renovatie</a></li>
+          <li><a href="#diensten">Reparatie</a></li>
+          <li><a href="#diensten">Automatisering</a></li>
+          <li><a href="#diensten">Onderhoud</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p><a href="tel:0464334131">046 433 4131</a></p>
+        <p><a href="mailto:info@couragebv.nl">info@couragebv.nl</a></p>
+        <p>Business Park Stein 210<br>6181 MB Elsloo</p>
       </div>
     </div>
     <div class="footer-bottom">
       <div class="container">
-        <p>© 2024 Droefcaster. Alle rechten voorbehouden, hoewel niemand er echt op staat te wachten.</p>
-        <p class="footer-made">Gemaakt met <span>😶</span> en teveel koffie</p>
+        <p>&copy; 2024 Courage B.V. De Kock Raam en Deurtechniek &ndash; KvK 14100339</p>
       </div>
     </div>
   </footer>
-
-  <!-- BACK TO TOP -->
-  <button class="back-to-top" id="back-to-top" title="Terug naar boven">↑</button>
 
   <script src="script.js"></script>
 </body>
