@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HARDCORE MEME GENERATOR 💀</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="hardcore.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="hc-header">
+    <div class="hc-logo">💀 HARDCORE<span>MEMER</span></div>
+    <p class="hc-tagline">GOOI JE VOCALS ERIN — KRIJG EEN GABBER MEME TERUG</p>
+  </header>
+
+  <main class="hc-main">
+
+    <!-- STAP 1: Upload / Record -->
+    <div class="drop-zone" id="drop-zone">
+      <div class="drop-icon">🎤</div>
+      <h2>DROP JE VOCALS HIER</h2>
+      <p>of klik om een bestand te kiezen (mp3, wav, ogg, m4a)</p>
+      <input type="file" id="file-input" accept="audio/*" hidden />
+      <div class="drop-buttons">
+        <button class="hc-btn hc-btn-upload" id="upload-btn">📂 BESTAND KIEZEN</button>
+        <button class="hc-btn hc-btn-mic" id="mic-btn">🎙️ MIC OPNEMEN</button>
+      </div>
+      <div class="recording-indicator" id="recording-indicator">
+        <div class="rec-dot"></div>
+        <span>BEZIG MET OPNEMEN...</span>
+        <button class="hc-btn hc-btn-stop" id="stop-btn">⏹ STOP</button>
+      </div>
+    </div>
+
+    <!-- STAP 2: Instellingen -->
+    <section class="controls-panel" id="controls-panel" hidden>
+      <h3 class="controls-title">⚙️ HARDCORE INSTELLINGEN</h3>
+      <div class="controls-grid">
+        <div class="control-group">
+          <label for="speed-slider">SPEED / PITCH</label>
+          <input type="range" id="speed-slider" min="0.5" max="4" step="0.1" value="2" />
+          <span class="control-val" id="speed-val">2.0×</span>
+        </div>
+        <div class="control-group">
+          <label for="dist-slider">DISTORTIE</label>
+          <input type="range" id="dist-slider" min="0" max="100" step="1" value="60" />
+          <span class="control-val" id="dist-val">60%</span>
+        </div>
+        <div class="control-group">
+          <label for="bass-slider">BASS BOOST</label>
+          <input type="range" id="bass-slider" min="-6" max="24" step="1" value="12" />
+          <span class="control-val" id="bass-val">+12 dB</span>
+        </div>
+        <div class="control-group">
+          <label for="text-speed-slider">MEME TEKST SNELHEID</label>
+          <input type="range" id="text-speed-slider" min="0.5" max="4" step="0.1" value="1.5" />
+          <span class="control-val" id="text-speed-val">1.5×</span>
+        </div>
+      </div>
+
+      <div class="custom-text-row">
+        <label for="custom-text">EIGEN MEME TEKST (optioneel)</label>
+        <input type="text" id="custom-text" placeholder="bv. HAKKUH HAKKUH" maxlength="40" />
+      </div>
+
+      <button class="hc-btn hc-btn-generate" id="generate-btn">
+        💀 GENEREER HARDCORE MEME 💀
+      </button>
+    </section>
+
+    <!-- Laden indicator -->
+    <div class="progress-wrap" id="progress-wrap" hidden>
+      <span id="progress-text">LADEN...</span>
+      <div class="progress-track">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- STAP 3: Canvas meme display -->
+    <div class="meme-display" id="meme-display" hidden>
+      <canvas id="meme-canvas" width="640" height="360"></canvas>
+      <div class="bpm-badge" id="bpm-badge">
+        <span class="bpm-num" id="bpm-num">350</span>
+        <span class="bpm-label">BPM</span>
+      </div>
+    </div>
+
+    <!-- Afspeelbediening -->
+    <div class="playback-bar" id="playback-bar" hidden>
+      <button class="hc-btn hc-btn-play" id="play-btn">▶ PLAY</button>
+      <button class="hc-btn hc-btn-loop" id="loop-btn">🔁 LOOP: AAN</button>
+      <button class="hc-btn hc-btn-download" id="download-btn">⬇ DOWNLOAD MEME (10s)</button>
+      <button class="hc-btn hc-btn-reset" id="reset-btn">🔄 OPNIEUW</button>
+    </div>
+
+    <!-- Download status -->
+    <div class="dl-status" id="dl-status" hidden>
+      <div class="dl-progress-track">
+        <div class="dl-progress-bar" id="dl-progress-bar"></div>
+      </div>
+      <span id="dl-status-text">OPNEMEN... 0s / 10s</span>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="hc-footer">
+    <p>HARDCORE MEME GENERATOR v1.0 💀 VOOR DE ECHTE GABBERS</p>
+    <a href="index.html">← Terug naar Droefcaster</a>
+  </footer>
+
+  <script src="hardcore.js"></script>
+</body>
+</html>
