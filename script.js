@@ -1,497 +1,330 @@
-/* ============================================================
-   DROEFCASTER — JavaScript Interactiviteit
-   ============================================================ */
-
 'use strict';
 
-/* ── COOKIE BANNER ─────────────────────────────────────────── */
-(function initCookieBanner() {
-  const banner = document.getElementById('cookie-banner');
-  const btn    = document.getElementById('cookie-accept');
-  if (!banner || !btn) return;
+/* ── INZETCONFIGURATIE (max £200 per race) ──────────────── */
+// Best WIN:         £100 outlay
+// Beste 3 (3x E/W): £10 E/W elk = £20 outlay per paard = £60 totaal
+// Underdog E/W:     £20 E/W = £40 outlay
+// Totaal:           £100 + £60 + £40 = £200 ✓
+const S = { best: 100, b3Each: 10, underdog: 20 };
 
-  if (localStorage.getItem('droef-cookies')) {
-    banner.classList.add('hidden');
-  }
-
-  btn.addEventListener('click', () => {
-    banner.classList.add('hidden');
-    localStorage.setItem('droef-cookies', '1');
-    // Show player after accepting cookies (dramatic effect)
-    setTimeout(() => {
-      document.getElementById('sticky-player')?.classList.add('visible');
-    }, 800);
-  });
-})();
-
-/* ── NAVBAR ────────────────────────────────────────────────── */
-(function initNavbar() {
-  const navbar   = document.getElementById('navbar');
-  const toggle   = document.getElementById('nav-toggle');
-  const links    = document.getElementById('nav-links');
-  const navLinks = document.querySelectorAll('.nav-link');
-
-  // Scroll effect
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
-  }, { passive: true });
-
-  // Mobile toggle
-  toggle?.addEventListener('click', () => {
-    links.classList.toggle('open');
-  });
-
-  // Close on link click
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => links.classList.remove('open'));
-  });
-
-  // Active section highlight
-  const sections = document.querySelectorAll('section[id]');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { threshold: 0.4 });
-
-  sections.forEach(sec => observer.observe(sec));
-})();
-
-/* ── AUDIO PLAYER (gesimuleerd, geen echte audio) ─────────── */
-(function initPlayer() {
-  const playBtn    = document.getElementById('play-btn');
-  const progressEl = document.getElementById('progress-bar');
-  const timeEl     = document.getElementById('time-current');
-  const muteBtn    = document.getElementById('mute-btn');
-  const speedSel   = document.getElementById('speed-select');
-  const epPlayBtn  = document.getElementById('ep-play-btn');
-  const progressWrap = document.getElementById('player-progress');
-  const player     = document.getElementById('sticky-player');
-
-  let playing = false;
-  let muted   = false;
-  let progress = 32; // start at 32%
-  let interval = null;
-  let seconds  = 0 + Math.floor((32 / 100) * 2843); // 47:23 = 2843s, start at 32%
-
-  function formatTime(s) {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-  }
-
-  function updateDisplay() {
-    if (progressEl) progressEl.style.width = progress + '%';
-    if (timeEl) timeEl.textContent = formatTime(seconds);
-  }
-
-  function startPlay() {
-    playing = true;
-    playBtn && (playBtn.textContent = '⏸');
-    epPlayBtn && (epPlayBtn.textContent = '⏸ Pauzeren');
-    interval = setInterval(() => {
-      if (seconds < 2843) {
-        seconds++;
-        progress = (seconds / 2843) * 100;
-        updateDisplay();
-      } else {
-        stopPlay();
-      }
-    }, 1000);
-  }
-
-  function stopPlay() {
-    playing = false;
-    clearInterval(interval);
-    playBtn && (playBtn.textContent = '▶');
-    epPlayBtn && (epPlayBtn.textContent = '▶ Speel af');
-  }
-
-  function togglePlay() {
-    if (playing) stopPlay(); else startPlay();
-  }
-
-  playBtn?.addEventListener('click', togglePlay);
-  epPlayBtn?.addEventListener('click', () => {
-    player?.classList.add('visible');
-    togglePlay();
-    setTimeout(() => {
-      player?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-    }, 200);
-  });
-
-  muteBtn?.addEventListener('click', () => {
-    muted = !muted;
-    muteBtn.textContent = muted ? '🔇' : '🔈';
-  });
-
-  // Click on progress bar to seek
-  progressWrap?.addEventListener('click', (e) => {
-    const rect = progressWrap.getBoundingClientRect();
-    const pct  = (e.clientX - rect.left) / rect.width;
-    progress   = pct * 100;
-    seconds    = Math.floor(pct * 2843);
-    updateDisplay();
-  });
-
-  updateDisplay();
-})();
-
-/* ── BACK TO TOP ───────────────────────────────────────────── */
-(function initBackToTop() {
-  const btn = document.getElementById('back-to-top');
-  if (!btn) return;
-
-  window.addEventListener('scroll', () => {
-    btn.classList.toggle('visible', window.scrollY > 400);
-  }, { passive: true });
-
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-})();
-
-/* ── EPISODE DATA ──────────────────────────────────────────── */
-const episodes = [
+/* ── RACE DATA ──────────────────────────────────────────── */
+const races = [
   {
-    num: 47, emoji: '🌧️', category: 'mindset',
-    title: 'Dingen die toch niet uitkomen',
-    desc: 'Een eerlijk gesprek over verwachtingen, met niemand. Mijn gast zegde af.',
-    date: '14 feb 2024', duration: '47:23'
+    id: 1,
+    name: 'Hardwicke Stakes',
+    time: '15:10',
+    type: 'Group 2',
+    distance: '1m4f',
+    runners: 12,
+    status: 'ready',
+    best: {
+      horse: 'Kalpana',
+      odds: '10/3',
+      jockey: 'Colin Keane',
+      trainer: 'Andrew Balding',
+      form: '2271-1',
+      draw: 2,
+      reason: 'Marktleider, gewonnen laatste race (form eindigt op 1), Draw 2 = binnenbaan voordeel op 1m4f, Balding yard in topvorm, Keane is een van de beste jockeys van het moment.'
+    },
+    underdog: {
+      horse: 'Ethical Diamond',
+      odds: '11/1',
+      jockey: 'D.B. McMonagle',
+      trainer: 'W P Mullins',
+      form: '/111-5',
+      draw: 9,
+      reason: 'Willie Mullins yard, won drie op rij voor laatste run. Herstelkandiaat bij 11/1 is uitstekende waarde — Mullins laat zelden een paard lopen zonder doel.'
+    },
+    bestOf3: [
+      { horse: 'Kalpana',      odds: '10/3', draw: 2, form: '2271-1', jockey: 'C. Keane' },
+      { horse: 'Jan Brueghel', odds: '5/1',  draw: 3, form: '214-12', jockey: 'R. Moore' },
+      { horse: 'Best Secret',  odds: '11/2', draw: 7, form: '311-61', jockey: 'J. Doyle' }
+    ]
   },
   {
-    num: 46, emoji: '😑', category: 'business',
-    title: '5 redenen waarom je business niet groeit (en dat misschien ook nooit doet)',
-    desc: 'Soms is het gewoon zo. Niet alles hoeft te groeien. Bomen ook niet altijd.',
-    date: '7 feb 2024', duration: '38:11'
+    id: 2,
+    name: 'QE Jubilee Stakes',
+    time: '15:40',
+    type: 'Group 1',
+    distance: '6f',
+    runners: 18,
+    status: 'ready',
+    best: {
+      horse: 'Joliestar',
+      odds: '13/8',
+      jockey: 'James McDonald',
+      trainer: 'Chris Wall',
+      form: '53-111',
+      draw: 9,
+      reason: 'RP tip. Australische kampioene met 2 Group 1 winnen dit voorjaar, 3 op rij gewonnen. Draw 9 is neutraal op rechte 6f. McDonald kent het paard als geen ander.'
+    },
+    underdog: {
+      horse: 'Almeraq',
+      odds: '25/1',
+      jockey: 'Tom Marquand',
+      trainer: 'William Haggas',
+      form: '/21F-1',
+      draw: 11,
+      reason: 'RP omschrijft expliciet als "dark horse with more in the tank". Recent gewonnen, Haggas = topstable. Bij 25/1 enorme waarde als dit paard zijn ware niveau toont.'
+    },
+    bestOf3: [
+      { horse: 'Joliestar',   odds: '13/8', draw: 9, form: '53-111',  jockey: 'J. McDonald' },
+      { horse: 'Lake Forest', odds: '17/2', draw: 1, form: '2207-1',  jockey: 'C. Fallon' },
+      { horse: 'Sajir',       odds: '18/1', draw: 6, form: '10-221',  jockey: 'O. Murphy' }
+    ]
   },
   {
-    num: 45, emoji: '☁️', category: 'interview',
-    title: 'Interview met Jan (niet zijn echte naam)',
-    desc: 'Jan heeft een bedrijf. Het gaat okay. Echt okay, niet "okay" als in goed.',
-    date: '31 jan 2024', duration: '52:04'
+    id: 3,
+    name: 'Race 3',
+    time: '16:20',
+    type: '?',
+    distance: '?',
+    runners: '?',
+    status: 'tbc'
   },
   {
-    num: 44, emoji: '🌫️', category: 'mindset',
-    title: 'Acceptatie als groeistrategie',
-    desc: 'Wat als je gewoon accepteert dat het goed genoeg is? Een radicaal idee.',
-    date: '24 jan 2024', duration: '29:47'
-  },
-  {
-    num: 43, emoji: '📉', category: 'business',
-    title: 'Omzetdoelen die je misschien haalt',
-    desc: 'Realistische financiële planning voor mensen die ook realistisch willen zijn.',
-    date: '17 jan 2024', duration: '41:20'
-  },
-  {
-    num: 42, emoji: '😴', category: 'mindset',
-    title: 'Rust als productiviteitstool (of gewoon rust)',
-    desc: 'Misschien hoef je ook gewoon minder te doen. Dat is ook een optie.',
-    date: '10 jan 2024', duration: '33:55'
+    id: 4,
+    name: 'Wokingham Stakes',
+    time: '17:00',
+    type: 'Heritage Handicap',
+    distance: '6f',
+    runners: 30,
+    status: 'ready',
+    best: {
+      horse: 'Realign',
+      odds: '14/1',
+      jockey: 'James Doyle',
+      trainer: 'William Haggas',
+      form: '017-91',
+      draw: 10,
+      reason: 'RP tip. Recent gewonnen, Draw 10 is uitstekend in 30-loper veld op rechte 6f. Doyle + Haggas = topcombinatie. Marktleider Binhareer heeft Draw 22 — groot nadeel.'
+    },
+    underdog: {
+      horse: 'Sondad',
+      odds: '25/1',
+      jockey: 'Joanna Mason',
+      trainer: 'M&D Easterby',
+      form: '723-01',
+      draw: 2,
+      reason: 'Recent gewonnen, Draw 2 = ideaal op rechte 6f in groot veld. Bij 25/1 enorme waarde: als de draw werkt en de form klopt, is dit de winnaar.'
+    },
+    bestOf3: [
+      { horse: 'Realign',        odds: '14/1', draw: 10, form: '017-91', jockey: 'J. Doyle' },
+      { horse: 'Far Above Dream', odds: '20/1', draw: 17, form: '101-11', jockey: 'K. Shoemark' },
+      { horse: 'Sondad',         odds: '25/1', draw: 2,  form: '723-01', jockey: 'J. Mason' }
+    ]
   }
 ];
 
-const blogPosts = [
-  {
-    emoji: '📉', category: 'Business', date: '14 feb 2024', readTime: '4 min',
-    title: '5 redenen waarom je business niet groeit (en hoe je daarmee leeft)',
-    excerpt: 'Niet elke business hoeft exponentieel te groeien. Soms is stabiel ook gewoon stabiel.'
-  },
-  {
-    emoji: '🌧️', category: 'Mindset', date: '7 feb 2024', readTime: '6 min',
-    title: 'Hoe ik leerde stoppen met positief denken (en waarom dat beter werkt)',
-    excerpt: 'Positief denken is leuk, maar eerlijk denken werkt ook. Misschien beter zelfs.'
-  },
-  {
-    emoji: '🎙️', category: 'Podcast', date: '31 jan 2024', readTime: '3 min',
-    title: 'Hoe je een podcast start die niemand luistert (gids voor beginners)',
-    excerpt: 'Stap-voor-stap guide om je eigen podcast op te zetten. Of je hem gaat maken is jouw keuze.'
-  },
-  {
-    emoji: '☕', category: 'Leven', date: '24 jan 2024', readTime: '5 min',
-    title: 'Waarom koffie de enige consistente factor is in mijn werkdag',
-    excerpt: 'Sommige dingen zijn zeker in het leven. Koffie. Meer dingen kan ik niet noemen.'
-  },
-  {
-    emoji: '🤷', category: 'Business', date: '17 jan 2024', readTime: '7 min',
-    title: '"Maar wat is dan jouw niche?" – Een vraag waar ik het antwoord niet op heb',
-    excerpt: 'Iedereen zegt dat je een niche moet hebben. Ik help mensen die ondernemen. Dat is het.'
-  },
-  {
-    emoji: '😪', category: 'Mindset', date: '10 jan 2024', readTime: '4 min',
-    title: 'Burnout preventie door gewoon minder te doen (radicaal advies)',
-    excerpt: 'Je hoeft niet alles te doen. Sterker nog: dat kan ook helemaal niet. Dat is wiskundig bewijsbaar.'
+/* ── HELPERS ────────────────────────────────────────────── */
+function toDecimal(frac) {
+  const [n, d] = frac.split('/').map(Number);
+  return d ? n / d + 1 : n + 1;
+}
+
+function winReturn(stake, odds) {
+  return Math.round(stake * toDecimal(odds));
+}
+
+function placeReturn(stake, odds) {
+  const placeOdds = (toDecimal(odds) - 1) / 4 + 1;
+  return Math.round(stake * placeOdds);
+}
+
+/* ── RENDER RACE ────────────────────────────────────────── */
+function renderRace(r) {
+  if (r.status === 'tbc') {
+    return `
+      <div class="race-tbc">
+        <div class="tbc-icon">📋</div>
+        <div class="tbc-title">Race ${r.id} — ${r.time}</div>
+        <p class="tbc-text">Stuur de screenshots voor de analyse</p>
+      </div>`;
   }
-];
 
-/* ── RENDER EPISODES ───────────────────────────────────────── */
-(function initEpisodes() {
-  const container  = document.getElementById('episodes-container');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const loadMoreBtn = document.getElementById('load-more-btn');
-  if (!container) return;
+  const { best, underdog, bestOf3 } = r;
+  const totalStake = S.best + S.b3Each * 2 * 3 + S.underdog * 2;
 
-  let currentFilter = 'all';
-  let visibleCount  = 3;
+  const bestReturn  = winReturn(S.best, best.odds);
+  const bestProfit  = bestReturn - S.best;
+  const udWin       = winReturn(S.underdog, underdog.odds);
+  const udPlace     = placeReturn(S.underdog, underdog.odds);
 
-  function renderEpisodes() {
-    const filtered = currentFilter === 'all'
-      ? episodes
-      : episodes.filter(ep => ep.category === currentFilter);
-    const visible = filtered.slice(0, visibleCount);
-
-    container.innerHTML = visible.map(ep => `
-      <div class="episode-item" data-cat="${ep.category}">
-        <div class="ep-item-cover">${ep.emoji}</div>
-        <div class="ep-item-info">
-          <div class="ep-item-num">Aflevering ${ep.num}</div>
-          <div class="ep-item-title">${ep.title}</div>
-          <div class="ep-item-desc">${ep.desc}</div>
-        </div>
-        <div class="ep-item-meta">
-          <div>${ep.date}</div>
-          <div>${ep.duration}</div>
-          <div style="margin-top:6px">
-            <button onclick="playEpisode(${ep.num})" style="background:none;border:1px solid var(--border);border-radius:99px;padding:3px 10px;cursor:pointer;font-size:.78rem;color:var(--accent)">▶ Spelen</button>
+  return `
+    <div class="race-card">
+      <div class="race-header">
+        <div>
+          <div class="race-number">Race ${r.id}</div>
+          <div class="race-name">${r.name}</div>
+          <div class="race-meta">
+            <span class="race-badge">${r.type}</span>
+            <span class="race-badge">${r.distance}</span>
+            <span class="race-badge">${r.runners} lopers</span>
           </div>
         </div>
+        <div class="race-time">${r.time}</div>
       </div>
-    `).join('');
 
-    if (loadMoreBtn) {
-      loadMoreBtn.style.display = filtered.length <= visibleCount ? 'none' : 'inline-flex';
-    }
-  }
+      <div class="race-body">
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter = btn.dataset.filter;
-      visibleCount  = 3;
-      renderEpisodes();
-    });
-  });
+        <!-- BEST BET -->
+        <div class="bet-block bet-best">
+          <div class="bet-label">🏆 Best bet — WIN</div>
+          <div class="bet-content">
+            <div class="bet-horse-row">
+              <div class="bet-horse-name">${best.horse}</div>
+              <div class="bet-odds">${best.odds}</div>
+            </div>
+            <div class="bet-details">
+              <span>🏇 ${best.jockey}</span>
+              <span>🎩 ${best.trainer}</span>
+              <span>📊 ${best.form}</span>
+              <span>🔢 Draw ${best.draw}</span>
+            </div>
+            <div class="bet-reason">${best.reason}</div>
+            <div class="bet-stake-row">
+              <div>
+                <div class="bet-stake-label">WIN inzet</div>
+                <div class="bet-stake-return">Als winnaar → £${bestReturn} terug (winst £${bestProfit})</div>
+              </div>
+              <div class="bet-stake-amount">£${S.best}</div>
+            </div>
+          </div>
+        </div>
 
-  loadMoreBtn?.addEventListener('click', () => {
-    visibleCount += 3;
-    renderEpisodes();
-  });
+        <!-- BESTE 3 -->
+        <div class="bet-block bet-b3">
+          <div class="bet-label">🎯 Beste 3 — Each-Way (£${S.b3Each} E/W per paard)</div>
+          <div class="b3-grid">
+            ${bestOf3.map((h, i) => `
+              <div class="b3-item">
+                <div class="b3-rank">#${i + 1}</div>
+                <div class="b3-horse">${h.horse}</div>
+                <div class="b3-odds">${h.odds}</div>
+                <div class="b3-form">${h.form}</div>
+                <div class="b3-jockey">${h.jockey} · draw ${h.draw}</div>
+                <div class="b3-stake">£${S.b3Each} E/W</div>
+              </div>`).join('')}
+          </div>
+        </div>
 
-  renderEpisodes();
-})();
+        <!-- UNDERDOG -->
+        <div class="bet-block bet-underdog">
+          <div class="bet-label">🎲 Underdog — Each-Way</div>
+          <div class="bet-content">
+            <div class="bet-horse-row">
+              <div class="bet-horse-name">${underdog.horse}</div>
+              <div class="bet-odds">${underdog.odds}</div>
+            </div>
+            <div class="bet-details">
+              <span>🏇 ${underdog.jockey}</span>
+              <span>🎩 ${underdog.trainer}</span>
+              <span>📊 ${underdog.form}</span>
+              <span>🔢 Draw ${underdog.draw}</span>
+            </div>
+            <div class="bet-reason">${underdog.reason}</div>
+            <div class="bet-stake-row">
+              <div>
+                <div class="bet-stake-label">EACH-WAY inzet</div>
+                <div class="bet-stake-return">Win: £${udWin} · Plaatsing: £${udPlace}</div>
+              </div>
+              <div class="bet-stake-amount">£${S.underdog} E/W</div>
+            </div>
+          </div>
+        </div>
 
-window.playEpisode = function(num) {
-  const player = document.getElementById('sticky-player');
-  player?.classList.add('visible');
-  const titleEl = player?.querySelector('.player-title');
-  if (titleEl) titleEl.textContent = `Afl. ${num}: Aan het laden...`;
-};
+        <!-- INZET OVERZICHT -->
+        <div class="stake-summary">
+          <div class="stake-row">
+            <span class="stake-label">Best WIN</span>
+            <span class="stake-val">£${S.best}</span>
+          </div>
+          <div class="stake-row">
+            <span class="stake-label">Beste 3 (3 × £${S.b3Each} E/W)</span>
+            <span class="stake-val">£${S.b3Each * 2 * 3}</span>
+          </div>
+          <div class="stake-row">
+            <span class="stake-label">Underdog E/W</span>
+            <span class="stake-val">£${S.underdog * 2}</span>
+          </div>
+          <div class="stake-total-row">
+            <span class="stake-total-label">Totaal race ${r.id}</span>
+            <span class="stake-total-val">£${totalStake}</span>
+          </div>
+        </div>
 
-/* ── RENDER BLOG ───────────────────────────────────────────── */
-(function initBlog() {
-  const grid = document.getElementById('blog-grid');
-  if (!grid) return;
+      </div>
+    </div>`;
+}
 
-  grid.innerHTML = blogPosts.map(post => `
-    <article class="blog-card">
-      <div class="blog-card-img">${post.emoji}</div>
-      <div class="blog-card-body">
-        <span class="blog-card-tag">${post.category}</span>
-        <h3 class="blog-card-title">${post.title}</h3>
-        <p class="blog-card-excerpt">${post.excerpt}</p>
-        <div class="blog-card-meta">
-          <span>${post.date}</span>
-          <span>${post.readTime} lezen</span>
+/* ── RENDER DAG OVERZICHT ───────────────────────────────── */
+function renderSummary() {
+  const ready = races.filter(r => r.status === 'ready');
+  const totalStaked = ready.length * 200;
+
+  const rows = ready.flatMap(r => [
+    { time: r.time, race: r.name, horse: r.best.horse,     odds: r.best.odds,     type: 'best',     stake: `£${S.best} WIN` },
+    ...r.bestOf3.map(h => ({ time: r.time, race: r.name, horse: h.horse, odds: h.odds, type: 'b3', stake: `£${S.b3Each} E/W` })),
+    { time: r.time, race: r.name, horse: r.underdog.horse, odds: r.underdog.odds, type: 'underdog', stake: `£${S.underdog} E/W` }
+  ]);
+
+  const maxBestReturn = ready.reduce((sum, r) => sum + winReturn(S.best, r.best.odds), 0);
+
+  return `
+    <div class="container">
+      <h2 class="day-summary-title">📋 Dag Overzicht — Alle Bets</h2>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Tijd</th>
+            <th>Race</th>
+            <th>Paard</th>
+            <th>Odds</th>
+            <th>Type</th>
+            <th>Inzet</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map(b => `
+            <tr>
+              <td>${b.time}</td>
+              <td>${b.race}</td>
+              <td><strong>${b.horse}</strong></td>
+              <td><strong>${b.odds}</strong></td>
+              <td><span class="type-badge badge-${b.type}">${b.type === 'best' ? 'Best' : b.type === 'b3' ? 'Top 3' : 'Underdog'}</span></td>
+              <td>${b.stake}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      <div class="summary-totals">
+        <div class="summary-box">
+          <div class="s-label">Races klaar</div>
+          <div class="s-value">${ready.length} / ${races.length}</div>
+        </div>
+        <div class="summary-box">
+          <div class="s-label">Totaal bets</div>
+          <div class="s-value">${rows.length}</div>
+        </div>
+        <div class="summary-box hl">
+          <div class="s-label">Totaal ingezet</div>
+          <div class="s-value">£${totalStaked}</div>
         </div>
       </div>
-    </article>
-  `).join('');
-})();
+    </div>`;
+}
 
-/* ── TESTIMONIAL SLIDER ────────────────────────────────────── */
-(function initSlider() {
-  const track  = document.getElementById('testimonials-track');
-  const dotsEl = document.getElementById('slider-dots');
-  const prevBtn = document.getElementById('slider-prev');
-  const nextBtn = document.getElementById('slider-next');
-  if (!track) return;
+/* ── INIT ───────────────────────────────────────────────── */
+(function init() {
+  const main    = document.getElementById('races-container');
+  const summary = document.getElementById('day-summary');
 
-  const cards = track.querySelectorAll('.testimonial-card');
-  let current = 0;
-  const total = cards.length;
-  const visible = () => window.innerWidth >= 900 ? 3 : window.innerWidth >= 600 ? 2 : 1;
+  if (main)    main.innerHTML    = races.map(renderRace).join('');
+  if (summary) summary.innerHTML = renderSummary();
 
-  // Create dots
-  if (dotsEl) {
-    dotsEl.innerHTML = Array.from({ length: total }, (_, i) =>
-      `<button class="dot${i === 0 ? ' active' : ''}" data-idx="${i}" aria-label="Ga naar ${i+1}"></button>`
-    ).join('');
+  const ready = races.filter(r => r.status === 'ready');
+  const amountEl = document.getElementById('total-amount');
+  const returnEl = document.getElementById('return-amount');
 
-    dotsEl.querySelectorAll('.dot').forEach(dot => {
-      dot.addEventListener('click', () => goTo(+dot.dataset.idx));
-    });
-  }
-
-  function goTo(idx) {
-    current = Math.max(0, Math.min(idx, total - visible()));
-    const cardWidth = cards[0].offsetWidth + 24;
-    track.style.transform = `translateX(-${current * cardWidth}px)`;
-    track.style.transition = 'transform .35s cubic-bezier(.4,0,.2,1)';
-    dotsEl?.querySelectorAll('.dot').forEach((dot, i) => {
-      dot.classList.toggle('active', i === current);
-    });
-  }
-
-  prevBtn?.addEventListener('click', () => goTo(current - 1));
-  nextBtn?.addEventListener('click', () => goTo(current + 1));
-
-  // Auto-advance (slowly, appropriately droef)
-  let auto = setInterval(() => goTo((current + 1) % Math.max(1, total - visible() + 1)), 5000);
-  track.parentElement.addEventListener('mouseenter', () => clearInterval(auto));
-  track.parentElement.addEventListener('mouseleave', () => {
-    auto = setInterval(() => goTo((current + 1) % Math.max(1, total - visible() + 1)), 5000);
-  });
-})();
-
-/* ── NEWSLETTER FORM ───────────────────────────────────────── */
-(function initNewsletter() {
-  const form    = document.getElementById('newsletter-form');
-  const success = document.getElementById('nl-success');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('nl-email')?.value;
-    if (!email) return;
-
-    // Simulate sending
-    const btn = form.querySelector('button[type="submit"]');
-    const original = btn.textContent;
-    btn.textContent = 'Bezig met aanmelden...';
-    btn.disabled = true;
-
-    setTimeout(() => {
-      success?.classList.add('visible');
-      btn.textContent = '✓ Aangemeld';
-      btn.style.background = '#48bb78';
-    }, 1200);
-  });
-})();
-
-/* ── CONTACT FORM ──────────────────────────────────────────── */
-(function initContact() {
-  const form    = document.getElementById('contact-form');
-  const success = document.getElementById('contact-success');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const btn = form.querySelector('button[type="submit"]');
-    const original = btn.textContent;
-    btn.textContent = 'Bezig met versturen...';
-    btn.disabled = true;
-
-    setTimeout(() => {
-      success?.classList.add('visible');
-      btn.textContent = '✓ Verstuurd (hopelijk)';
-      btn.style.background = '#48bb78';
-      form.reset();
-    }, 1500);
-  });
-})();
-
-/* ── SMOOTH SCROLL + OFFSET ────────────────────────────────── */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', (e) => {
-    const target = document.querySelector(anchor.getAttribute('href'));
-    if (!target) return;
-    e.preventDefault();
-    const offset = 80;
-    const top = target.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top, behavior: 'smooth' });
-  });
-});
-
-/* ── FADE-IN ON SCROLL ─────────────────────────────────────── */
-(function initFadeIn() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-    .fade-in.visible { opacity: 1; transform: none; }
-  `;
-  document.head.appendChild(style);
-
-  const targets = document.querySelectorAll(
-    '.service-card, .testimonial-card, .blog-card, .episode-item, .stat, .skill-item'
-  );
-
-  targets.forEach((el, i) => {
-    el.classList.add('fade-in');
-    el.style.transitionDelay = (i % 4) * 0.08 + 's';
-  });
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-
-  targets.forEach(el => io.observe(el));
-})();
-
-/* ── EASTER EGG: Konami Code ───────────────────────────────── */
-(function initEasterEgg() {
-  const konamiCode = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  let idx = 0;
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === konamiCode[idx]) {
-      idx++;
-      if (idx === konamiCode.length) {
-        idx = 0;
-        showEasterEgg();
-      }
-    } else {
-      idx = 0;
-    }
-  });
-
-  function showEasterEgg() {
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-      position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.85);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      color:#fff;text-align:center;gap:20px;
-    `;
-    overlay.innerHTML = `
-      <div style="font-size:5rem">😔</div>
-      <h2 style="font-size:2rem;font-weight:800">Je hebt de Droef Code gevonden</h2>
-      <p style="opacity:.7;max-width:400px">Gefeliciteerd. Dit was de meest droevige easter egg ooit gemaakt.
-      Er is geen prijs. Er was nooit een prijs. Maar je deed het toch.</p>
-      <button onclick="this.parentElement.remove()" style="
-        background:#667eea;color:#fff;border:none;padding:12px 28px;
-        border-radius:8px;cursor:pointer;font-size:1rem;font-weight:700;
-      ">Terug naar de droefheid →</button>
-    `;
-    document.body.appendChild(overlay);
-  }
-})();
-
-/* ── TITLE VISIBILITY TRICK ────────────────────────────────── */
-(function initTitleChange() {
-  const originalTitle = document.title;
-  document.addEventListener('visibilitychange', () => {
-    document.title = document.hidden
-      ? '😔 Kom terug... of niet. Maakt ook niet uit.'
-      : originalTitle;
-  });
+  if (amountEl) amountEl.textContent = ready.length * 200;
+  if (returnEl) returnEl.textContent = ready.reduce((s, r) => s + winReturn(S.best, r.best.odds), 0);
 })();
