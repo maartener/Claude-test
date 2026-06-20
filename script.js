@@ -113,6 +113,38 @@ const races = [
       { horse: 'Far Above Dream', odds: '20/1', draw: 17, form: '101-11', jockey: 'K. Shoemark' },
       { horse: 'Sondad',         odds: '25/1', draw: 2,  form: '723-01', jockey: 'J. Mason' }
     ]
+  },
+  {
+    id: 5,
+    name: 'Golden Gates Stakes',
+    time: '17:35',
+    type: 'Handicap',
+    distance: '1m2f',
+    runners: 12,
+    status: 'ready',
+    best: {
+      horse: 'Lost Boys',
+      odds: '11/4',
+      jockey: 'James McDonald',
+      trainer: 'David Menuisier',
+      form: '331-11',
+      draw: 14,
+      reason: 'Topvorm: 2 op rij gewonnen. McDonald rijdt uitstekend op Ascot dit seizoen. Menuisier yard is momenteel in uitstekende vorm. Op 1m2f is draw minder cruciaal — klasse en conditionering bepalen de uitslag.'
+    },
+    underdog: {
+      horse: 'Princling',
+      odds: '15/2',
+      jockey: 'Tom Marquand',
+      trainer: 'William Haggas',
+      form: '22-14',
+      draw: 18,
+      reason: 'Haggas topstable met Marquand in het zadel. Op 1m2f geen draw-nadeel. Bij 15/2 aantrekkelijke prijs voor een paard dat al twee keer tweede werd — klaar voor een overwinning.'
+    },
+    bestOf3: [
+      { horse: 'Lost Boys',   odds: '11/4', draw: 14, form: '331-11', jockey: 'J. McDonald' },
+      { horse: 'Sahara King', odds: '5/1',  draw: 17, form: '1-522',  jockey: 'J. Doyle' },
+      { horse: 'Princling',   odds: '15/2', draw: 18, form: '22-14',  jockey: 'T. Marquand' }
+    ]
   }
 ];
 
