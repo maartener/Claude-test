@@ -1,0 +1,363 @@
+/* ============================================================
+   ROYAL ASCOT 2026 — Betting Strategy App
+   ============================================================ */
+
+:root {
+  --navy:        #0d1b3e;
+  --navy-mid:    #1a2f5e;
+  --navy-light:  #243a70;
+  --gold:        #c9a84c;
+  --gold-light:  #e8c86d;
+  --gold-bg:     #fdf8ed;
+  --green:       #1e5c3a;
+  --green-light: #27774c;
+  --green-bg:    #eef7f1;
+  --white:       #ffffff;
+  --bg:          #f5f3ee;
+  --text:        #1a1a2e;
+  --text-muted:  #6b7280;
+  --border:      #e5e0d5;
+  --shadow:      0 2px 16px rgba(0,0,0,0.09);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ── HEADER ──────────────────────────────────────────────── */
+.site-header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 28px 0 0;
+  text-align: center;
+}
+
+.header-logo { font-size: 2.8rem; margin-bottom: 8px; }
+
+.header-title {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--gold-light);
+}
+
+.header-subtitle {
+  font-size: 0.88rem;
+  opacity: 0.65;
+  margin-top: 4px;
+  margin-bottom: 22px;
+}
+
+.budget-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: rgba(255,255,255,0.07);
+  padding: 16px 20px;
+  flex-wrap: wrap;
+}
+
+.budget-item { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+
+.budget-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  opacity: 0.55;
+}
+
+.budget-value { font-size: 1.15rem; font-weight: 800; color: var(--gold-light); }
+.budget-divider { opacity: 0.2; font-size: 1.6rem; }
+
+/* ── MAIN ───────────────────────────────────────────────── */
+.main {
+  padding: 28px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── RACE CARD ──────────────────────────────────────────── */
+.race-card {
+  background: var(--white);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+.race-header {
+  background: var(--navy-mid);
+  color: var(--white);
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.race-number { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.2px; opacity: 0.55; margin-bottom: 3px; }
+.race-name   { font-size: 1.15rem; font-weight: 800; color: var(--gold-light); line-height: 1.2; }
+
+.race-meta { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+
+.race-badge {
+  font-size: 0.68rem;
+  padding: 3px 9px;
+  border-radius: 99px;
+  background: rgba(255,255,255,0.12);
+}
+
+.race-time { font-size: 1.6rem; font-weight: 900; color: var(--gold-light); white-space: nowrap; flex-shrink: 0; }
+
+/* ── RACE BODY ──────────────────────────────────────────── */
+.race-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+/* ── BET BLOCKS ─────────────────────────────────────────── */
+.bet-block { border-radius: 12px; overflow: hidden; border: 2px solid transparent; }
+.bet-block.bet-best     { background: var(--green-bg);  border-color: var(--green-light); }
+.bet-block.bet-b3       { background: #f0f4ff;           border-color: var(--navy-light); }
+.bet-block.bet-underdog { background: var(--gold-bg);    border-color: var(--gold); }
+
+.bet-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+}
+
+.bet-best     .bet-label { background: var(--green);      color: var(--white); }
+.bet-b3       .bet-label { background: var(--navy-light);  color: var(--white); }
+.bet-underdog .bet-label { background: var(--gold);        color: var(--navy); }
+
+.bet-content { padding: 14px 16px; }
+
+.bet-horse-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bet-horse-name { font-size: 1.25rem; font-weight: 800; }
+.bet-odds       { font-size: 1.5rem;  font-weight: 900; flex-shrink: 0; }
+
+.bet-best     .bet-odds { color: var(--green); }
+.bet-underdog .bet-odds { color: #a07820; }
+.bet-b3       .bet-odds { color: var(--navy); }
+
+.bet-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.bet-reason {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  line-height: 1.55;
+}
+
+.bet-stake-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 10px 13px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.bet-stake-label  { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+.bet-stake-return { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+.bet-stake-amount { font-size: 1.1rem; font-weight: 900; color: var(--navy); flex-shrink: 0; }
+
+/* ── BEST OF 3 GRID ─────────────────────────────────────── */
+.b3-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+@media (max-width: 480px) {
+  .b3-grid { grid-template-columns: 1fr; gap: 8px; }
+}
+
+.b3-item {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 12px 10px;
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.b3-rank   { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 5px; }
+.b3-horse  { font-size: 0.92rem; font-weight: 800; line-height: 1.2; }
+.b3-odds   { font-size: 1.05rem; font-weight: 900; color: var(--navy); margin-top: 5px; }
+.b3-form   { font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; font-family: monospace; }
+.b3-jockey { font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; }
+
+.b3-stake {
+  margin-top: 9px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--navy-mid);
+  background: #dce5ff;
+  padding: 3px 9px;
+  border-radius: 99px;
+  display: inline-block;
+}
+
+/* ── STAKE SUMMARY ──────────────────────────────────────── */
+.stake-summary {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+}
+
+.stake-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; }
+.stake-label { opacity: 0.65; }
+.stake-val   { font-weight: 700; color: var(--gold-light); }
+
+.stake-total-row {
+  grid-column: 1 / -1;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  padding-top: 10px;
+  margin-top: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stake-total-label { font-weight: 600; font-size: 0.85rem; }
+.stake-total-val   { font-weight: 900; font-size: 1.15rem; color: var(--gold-light); }
+
+/* ── TBC CARD ────────────────────────────────────────────── */
+.race-tbc {
+  background: var(--white);
+  border-radius: 18px;
+  border: 2px dashed var(--border);
+  padding: 36px 20px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.tbc-icon  { font-size: 2.2rem; margin-bottom: 10px; }
+.tbc-title { font-size: 1rem; font-weight: 700; color: var(--navy-mid); }
+.tbc-text  { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
+
+/* ── DAY SUMMARY ─────────────────────────────────────────── */
+.day-summary { padding: 32px 0 40px; border-top: 3px solid var(--gold); margin-top: 8px; }
+
+.day-summary-title { font-size: 1.15rem; font-weight: 800; color: var(--navy); margin-bottom: 18px; }
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.summary-table th {
+  text-align: left;
+  padding: 9px 12px;
+  background: var(--navy);
+  color: var(--gold-light);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+}
+
+.summary-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  background: var(--white);
+}
+
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table tr:hover td { background: #f9f7f2; }
+
+.type-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 99px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-best     { background: var(--green);      color: white; }
+.badge-b3       { background: var(--navy-light);  color: white; }
+.badge-underdog { background: var(--gold);        color: var(--navy); }
+
+.summary-totals {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .summary-totals { grid-template-columns: 1fr 1fr; }
+}
+
+.summary-box {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.summary-box .s-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 5px; }
+.summary-box .s-value { font-size: 1.4rem; font-weight: 900; color: var(--navy); }
+
+.summary-box.hl { background: var(--navy); border-color: var(--navy); }
+.summary-box.hl .s-label { color: rgba(255,255,255,0.55); }
+.summary-box.hl .s-value { color: var(--gold-light); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.site-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+  padding: 22px 16px;
+  font-size: 0.76rem;
+  margin-top: 16px;
+  line-height: 1.9;
+}
+
+.site-footer a { color: var(--gold); text-decoration: none; }
